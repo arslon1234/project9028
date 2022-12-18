@@ -1,7 +1,7 @@
 <template>
   <div class="Login">
     <div class="Login__item">
-      <h1>Tizimga kirish</h1>
+      <h1>KIRISH</h1>
       <form>
         <label for="login">Username</label>
         <input type="text" id="login" placeholder="Username"/>
