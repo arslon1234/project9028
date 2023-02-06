@@ -21,7 +21,7 @@
       </tbody>
     </table>
         <div class="nothing" v-if="!body.length">
-          <span>Malumot yo'q</span>
+          <span>No data</span>
         </div>
   </template>
   <script setup>

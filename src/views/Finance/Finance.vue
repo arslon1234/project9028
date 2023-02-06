@@ -1,7 +1,7 @@
 <template>
     <section class="warehouse">
       <div :class="isShow ? 'warehouse__sidebar' : 'warehouse__sidebar1'">
-        <warehouseSidebarVue :isShow="isShow" :isShowItem="isShowItem"/>
+        <financeSidebarVue :isShow="isShow" :isShowItem="isShowItem"/>
       </div>
       <div :class="isShow ? 'warehouse__main' : 'warehouse__main1'">
         <div class="warehouse-navbar">
@@ -13,7 +13,7 @@
   </template>
   
   <script setup>
-  import warehouseSidebarVue from '@/components/layouts/warehouse-sidebar.vue';
+  import financeSidebarVue from '@/components/layouts/finance-sidebar.vue';
   import warehouseNavbarVue from '@/components/layouts/warehouse-navbar.vue';
   import { ref } from 'vue';
   import store from '@/store';

@@ -126,9 +126,9 @@ const Login_With_Role =()=>{
       }else if(response.data.current_role === 'director'){
         router.push({name: "director"})
       }else if(response.data.current_role === 'salesman'){
-        router.push({name:'salesman'})
+        router.push({name:'clients'})
       }else if(response.data.current_role === 'financier'){
-        router.push({name:'financier'})
+        router.push({name:'income'})
       }
       dialog.value = false
     }

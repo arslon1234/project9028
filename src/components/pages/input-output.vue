@@ -2,7 +2,7 @@
     <AppModal v-model="dialog" :width="'40%'">
         <div class="input_output">
             <h1>Add input invoice</h1>
-            <Form>
+            <Form @submit="sendInput">
              <label for="supplier">Select supplier</label>
              <Field
                 rules="required"
@@ -34,7 +34,6 @@
               </Field>
           <button
             type="submit"
-            @click="sendInput"
           >
             Add input invoice
           </button>
@@ -43,14 +42,16 @@
    </AppModal>
     <AppModal v-model="dialog2" :width="'40%'">
         <div class="input_output">
-            <h1>Add output invoice</h1>
-            <Form>
-             <label for="supplier">Select client</label>
+            <h1 v-if="!forms_output.id">Add output invoice</h1>
+            <h1 v-else>Edit output invoice</h1>
+            <Form @submit="sendOutput">
+             <label for="supplier" v-if="!forms_output.id">Select client</label>
              <Field
                 rules="required"
                 :modelValue="forms_output.client"
                 v-slot="{ errors }"
                 name="Supplier"
+                v-if="!forms_output.id"
               >
               <select v-model="forms_output.client">
              <option disabled selected hidden value="">Select your supplier</option>
@@ -58,6 +59,20 @@
                 {{ item.title }}
               </option>
               </select>
+            <p class="login__input-error" v-if="errors && errors.length">
+               {{ errors[0] }}
+             </p>
+              </Field>
+             <label for="product_name" v-else>Status</label>
+             <Field
+               v-if="forms_output.id"
+                rules="required"
+                :modelValue="forms_output.status"
+                v-slot="{ errors }"
+                name="Product Name"
+                
+              >
+            <input class="form__input" type="text" id="product_name" placeholder="Product Name" v-model="forms_output.status">
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
@@ -76,9 +91,15 @@
               </Field>
           <button
             type="submit"
-            @click="sendOutput"
+            v-if="!forms_output.id"
           >
             Add output invoice
+          </button>
+          <button
+            type="submit"
+            v-else
+          >
+            Edit output invoice
           </button>
         </Form>
         </div>
@@ -95,7 +116,7 @@
         <h1>Are you sure you want to delete ?</h1>
         <aside class="delete_GB__action">
             <button class="btn1" @click="dialog3 = false">cancel</button>
-            <button class="btn2" @click="delete_group_brand">delete</button>
+            <button class="btn2" @click="deleteInvoice">delete</button>
         </aside>
     </section>
    </AppModal>
@@ -120,14 +141,17 @@ const forms_input = ref({
 })
 const forms_output = ref({
     client: null,
-    description: ""
+    description: "",
+    status: ''
 })
-const openModalInput = (value) => {
-    if(value && value.id) forms_input.value = value
+const openModalInput = (item,value) => {
+    if(item && item.id) forms_input.value = item
+    title.value = value
     dialog.value = true
 }
-const openModalOutput = (value) => {
-    if(value && value.id) forms_output.value = value
+const openModalOutput = (item,value) => {
+    if(item && item.id) forms_output.value = item
+    title.value = value
     dialog2.value = true
 }
 const deleteInvoices =(id, value)=>{
@@ -142,7 +166,7 @@ async function sendInput() {
         description: forms_input.value.description
        }).then(res=>{
         if(res.status === 201){
-            location.reload()
+          router.push({name: 'invoice_input_item', params:{id: res.data.id}})
         }
        })
        dialog.value = false
@@ -155,16 +179,31 @@ async function sendInput() {
 }
 async function sendOutput() {
  try {
-  await http.post('/api/warehouse/output-invoice/', {
-     client: forms_output.value.client,
-     description: forms_output.value.description
-    }).then(res=>{
-      // if(res.status === 201){
-      //   location.reload()
-      // }
-      Notification({ text: "Invoce addedd !!!" },{type: 'success'})
-    })
-    dialog2.value = false
+  if(!forms_output.value.id){
+    await http.post('/api/warehouse/output-invoice/', {
+       client: forms_output.value.client,
+       description: forms_output.value.description
+      }).then(res=>{
+        if(res.status === 201){
+          router.push({name: 'invoice_output_item', params:{id: res.data.id}})
+        }
+      })
+      dialog2.value = false
+  }else await http.put(`/api/warehouse/${title.value}/${forms_output.value.id}/`,{
+    status: forms_output.value.status,
+    description: forms_output.value.description
+  }).then(res=>{
+    if(res.status === 201){
+          location.reload()
+    }
+    console.log(res.status)
+  })
+  dialog2.value = false
+  if(!forms_output.value.id){
+    Notification({ text: "Invoice added !!!" },{type: 'success'})
+  }else{
+    Notification({ text: "Invoice updated !!!" },{type: 'warning'})
+  }
  } catch(err) {
    console.log(err);
     Notification({ text: "Something wrong !!!" },{type: 'danger'}
@@ -173,7 +212,7 @@ async function sendOutput() {
 }
 async function deleteInvoice (){
   try{
-    await Notification({ text: "Invoce deleted !!!" },{type: 'success'})
+    await Notification({ text: "Invoce deleted !!!" },{type: 'danger'})
      http.delete(`/api/warehouse/${title.value}/${ID.value}`).then(res=>{
       if(res.status === 204){
         location.reload()

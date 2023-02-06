@@ -27,7 +27,16 @@ const Log_Out =()=>{
   location.reload()
 }
 const Go_Profile =()=>{
-  router.push({name: 'profile'})
+  const role = localStorage.getItem("role")
+  if(role === 'warehouseman'){
+  router.push({name: 'warehouse_profile'})
+  }else if(role === 'salesman'){
+  router.push({name: 'sales_profile'})
+  }else if(role === 'director'){
+    // router.push({name: 'sales_profile'})
+  }else if(role === 'financier'){
+    router.push({name: 'finance_profile'})
+  }
   isHide.value = false
 }
 </script>

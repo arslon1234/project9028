@@ -7,7 +7,7 @@
           <div class="product__lists-table">
          <app-table :headers="headers_output" :body="output_invoice_lists">
           <template #body_client="{ item }">
-            <span class="product__lists-table-text">{{ item.client.title }}</span>
+            <router-link :to="{name: 'invoice_output_item', params:{id: item.id}}" class="product__lists-table-text">{{ item.client.title }}</router-link>
           </template>
           <template #body_address="{ item }">
             <span class="product__lists-table-text">{{ item.client.address }}</span>
@@ -17,8 +17,9 @@
           </template>
           <template #body_actions="{item}">
               <div class="actions">
-                  <button class="btn1">edit</button>
-                  <button class="btn2" @click="deleteInputInvoice(item.id, 'output-invoice')">delete</button>
+                <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <span class="edit" v-if="item.status != 'confirmed'" @click="openInvoiceEdit(item, 'output-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="delete" v-if="item.status != 'confirmed'" @click="open_Output_Invoice(item.id, 'output-invoice')"><i class="fa-solid fa-trash-can"></i></span>
               </div>
           </template>
         </app-table>
@@ -41,6 +42,7 @@
   import http from '@/plugins/axios';
   import VPagination from "@hennge/vue3-pagination";
   import inputOutput from '../../components/pages/input-output.vue'
+import router from '@/router';
   const input_invoice = ref()
   const output_invoice_lists = ref([])
   const params_output = ref({
@@ -84,8 +86,11 @@
   const openOutputInvoice =()=>{
       input_invoice.value.openModalOutput()
   }
-  const deleteInputInvoice =(id,value)=>{
+  const open_Output_Invoice =(id,value)=>{
     input_invoice.value.deleteInvoices(id,value)
+  }
+  const openInvoiceEdit =(item,value)=>{
+    input_invoice.value.openModalOutput(item,value)
   }
   getInvoiceOutput()
   </script>
@@ -120,23 +125,23 @@
           display: flex;
           align-items: center;
           gap: 5px;
-          %btn{
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          color: $white-color;
-          font-size: 14px;
-          letter-spacing: 0.5px;
-          padding: 6px 13px
-      }
-      .btn1{
-          @extend %btn;
-          background-color: $blue-color2;
-      }
-      .btn2{
-          @extend %btn;
-          background-color: $red-color;
-      }
+         %action{
+        font-size: 18px;
+        cursor: pointer;
+        margin: 0px 5px;
+    }
+    .edit{
+      @extend %action;
+      color: $blue-color2;
+    }
+    .delete{
+      @extend %action;
+      color: $red-color;
+    }
+    .eye{
+      @extend %action;
+      color: $blue-color;
+    }
       }
       
       .product__lists-table-text{
@@ -146,6 +151,9 @@
         -webkit-line-clamp: 2; 
         -webkit-box-orient: vertical;
         color: #000;
+        &:hover{
+        color: $blue-color;
+      }
       }
       .pagination {
         width: 98%;

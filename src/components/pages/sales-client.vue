@@ -1,103 +1,41 @@
 <template>
     <AppModal v-model="dialog" :width="'50%'">
       <div class="modal">
-        <h3 v-if="!forms.id">Add Product</h3>
-        <h3 v-else>Edit Product</h3>
+        <h3 v-if="!forms.id">Add Client</h3>
+        <h3 v-else>Edit Client</h3>
         <Form @submit="send">
-          <div class="modal__form-img">
-            <img :src="forms.image" alt="user">
-            <div class="modal__form-change-img">
-              <label for="file">Select image</label>
-              <input type="file" ref="file" id="file" @change="handleChange($event)">
-            </div>
-          </div>
-             <label for="product_name">Product Name</label>
+             <label for="product_name">Client Name</label>
              <Field
                 rules="required"
                 :modelValue="forms.title"
                 v-slot="{ errors }"
-                name="Product Name"
+                name="Client Name"
               >
-            <input class="form__input" type="text" id="product_name" placeholder="Product Name" v-model="forms.title">
+            <input class="form__input" type="text" id="product_name" placeholder="Client Name" v-model="forms.title">
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
               </Field>
-             <label for="product_code">Product code</label>
+             <label for="desc">Address</label>
              <Field
                 rules="required"
-                :modelValue="forms.code"
+                :modelValue="forms.address"
                 v-slot="{ errors }"
-                name="Product code"
+                name="Address"
               >
-            <input class="form__input" type="text" id="product_code" placeholder="Product code" v-model="forms.code">
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-              </Field>
-             <label for="arrival_price">Arrival price</label>
-             <Field
-                rules="required"
-                :modelValue="forms.current_arrival_price"
-                v-slot="{ errors }"
-                name="Arrival price"
-              >
-            <input class="form__input" type="number" id="arrival_price" placeholder="Arrival price" v-model="forms.current_arrival_price">
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-              </Field>
-             <label for="selling_price">Selling price</label>
-             <Field
-                rules="required"
-                :modelValue="forms.current_selling_price"
-                v-slot="{ errors }"
-                name="Selling price"
-              >
-            <input class="form__input" type="number" id="selling_price" placeholder="Selling price" v-model="forms.current_selling_price">
+            <input class="form__input" type="text" id="product_name" placeholder="Address" v-model="forms.address">
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
              </Field>
-             <label for="group">Select group</label>
+             <label for="desc">Phone numbers</label>
              <Field
                 rules="required"
-                :modelValue="forms.group"
+                :modelValue="forms.phone_number"
                 v-slot="{ errors }"
-                name="Product group"
+                name="Phone number"
               >
-              <select id="group" class="form__select" v-model="forms.group">
-                <option disabled selected hidden value="">Select product group</option>
-                <option :value="item.id" v-for="item in $store?.state?.groups" :key="item.id">{{ item.title }}</option>
-              </select>
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-             </Field>
-             <label for="brand">Select brand</label>
-             <Field
-                rules="required"
-                :modelValue="forms.brand"
-                v-slot="{ errors }"
-                name="Product brand"
-              >
-              <select id="brand" class="form__select" v-model="forms.brand">
-                <option disabled selected hidden value="">Select product brand</option>
-                <option :value="item.id" v-for="item in $store?.state?.brands" :key="item.id">{{ item.title }}</option>
-              </select>
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-             </Field>
-             <label for="desc">Description</label>
-             <Field
-                rules="required"
-                :modelValue="forms.description"
-                v-slot="{ errors }"
-                name="Description"
-              >
-              <textarea v-model="forms.description" class="form__text" id="desc" placeholder="Description"></textarea>
-            <!-- <input class="form__input" type="text" id="desc" placeholder="Selling price" v-model="forms.current_selling_price"> -->
+            <input class="form__input" type="tel" id="product_name" placeholder="Phone number" v-model="forms.phone_number" v-mask="'998#########'">
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
@@ -106,23 +44,23 @@
             type="submit"
             v-if="!forms.id"
           >
-            Add Product
+            Add Client
           </button>
           <button
             type="submit"
              v-else
           >
-            Edit Product
+            Edit Client
           </button>
         </Form>
       </div>
    </AppModal>
    <AppModal v-model="dialog2" :width="'40%'">
       <div class="modal">
-        <h3>Are you sure ?</h3>
+        <h3>Are you sure you want to delete ?</h3>
         <div class="modal_act">
           <button class="btn1" @click="dialog2 = false">cancel</button>
-          <button class="btn2" @click="deleteProduct">delete</button>
+          <button class="btn2" @click="deleteModal">delete</button>
         </div>
       </div>
    </AppModal>
@@ -144,22 +82,9 @@ const dialog2 = ref(false)
 const file = ref(null)
 const forms = ref({
  title: "",
- code: "",
- image: null,
- current_arrival_price: "",
- current_selling_price: "",
- group: null,
- brand: null,
- description:""
+ address:"",
+ phone_number: ""
 });
-const handleChange =(event)=>{
-  forms.value.image = event.target.files[0]
-}
-const props = defineProps({
-  title_text:{
-    type: String
-  }
-})
 const openModal = (value) => {
    if(value && value.id) forms.value = value
    dialog.value = true
@@ -169,53 +94,48 @@ const openDeleteModal = (value)=>{
   dialog2.value = true
 }
 async function send(event) {
-  const form = new FormData()
-  form.append("title", forms.value.title)
-  form.append("code", forms.value.code)
-  form.append("current_arrival_price", forms.value.current_arrival_price)
-  form.append("current_selling_price", forms.value.current_selling_price)
-  form.append("image", forms.value.image)
-  form.append("group", forms.value.group)
-  form.append("brand", forms.value.brand)
-  form.append("description", forms.value.description)
  try {
    if(!forms.value.id) {
-       await http.post('/api/warehouse/product/', form,{
-        headers:{
-          'content-type': 'multipart/form-data'
-        }
+       await http.post('/api/sales/client/',{
+        title: forms.value.title,
+        address: forms.value.address,
+        phone_number: forms.value.phone_number
        }).then(res=>{
-        if(res.status === 200){
+        if(res.status === 201){
           location.reload()
         }
        })
    }
-   else await http.put(`/api/warehouse/product/${forms.value.id}/`, form).then(res=>{
+   else await http.put(`/api/sales/client/${forms.value.id}/`, {
+    title: forms.value.title,
+    address: forms.value.address,
+    phone_number: forms.value.phone_number
+   }).then(res=>{
     if(res.status === 200){
-          location.reload()
+        location.reload()
     }
   })
-  dialog.value = false
   if(!forms.value.id){
-    Notification({ text: "Product added !!!" },{type: 'success'})
+    Notification({ text: "Client added !!!" },{type: 'success'})
   }else{
-    Notification({ text: "Product updated !!!" },{type: 'warning'})
+    Notification({ text: "Client updated !!!" },{type: 'warning'})
   }
+  dialog.value = false
  } catch(err) {
    console.log(err);
     Notification({ text: "Something wrong !!!" },{type: 'danger'}
    )
  }
 }
-async function deleteProduct () {
+async function deleteModal () {
   try{
-    await http.delete(`/api/warehouse/product/${forms.value.id}`).then(res=>{
+    await Notification({ text: "Client deleted !!!" },{type: 'danger'})
+     http.delete(`/api/sales/client/${forms.value.id}`).then(res=>{
       console.log(res)
       if(res.status === 204){
-        router.push({name: 'product-list'})
+        location.reload()
       }
     })
-    Notification({ text: "Product deleted !!!" },{type: 'danger'})
    dialog2.value = false
   }catch(err){
     console.log(err)

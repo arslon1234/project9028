@@ -8,17 +8,21 @@
         <span><i class="fa-solid fa-list"></i></span>
         <span :class="isShow ? 'sidebar__items-title' : ''" >Products</span>
     </router-link>
-    <router-link to="/invoice_input" active-class="sidebar__item1" class="sidebar__item">
-        <span><i class="fa-solid fa-receipt"></i></span>
-        <span :class="isShow ? 'sidebar__items-title' : ''" >Invoice Input</span>
+    <router-link to="/invoice_input" active-class="sidebar__item1" class="sidebar__item" :class="{ sidebar__item1: $route.meta.child === 'input_item' }">
+        <span><i class="fa-solid fa-building-circle-check"></i></span>
+        <span :class="isShow ? 'sidebar__items-title' : ''" >Arrived</span>
     </router-link>
-    <router-link to="/invoice_output" active-class="sidebar__item1" class="sidebar__item">
-        <span><i class="fa-solid fa-receipt"></i></span>
-        <span :class="isShow ? 'sidebar__items-title' : ''" >Invoice Output</span>
+    <router-link to="/invoice_output" active-class="sidebar__item1" class="sidebar__item" :class="{ sidebar__item1: $route.meta.child === 'output_item' }">
+        <span><i class="fa-solid fa-building-circle-arrow-right"></i></span>
+        <span :class="isShow ? 'sidebar__items-title' : ''" >Delivered</span>
     </router-link>
-    <router-link to="/returns" active-class="sidebar__item1" class="sidebar__item">
-        <span><i class="fa-solid fa-right-left"></i></span>
-        <span :class="isShow ? 'sidebar__items-title' : ''" >Returns</span>
+    <router-link to="/returns" active-class="sidebar__item1" class="sidebar__item" :class="{ sidebar__item1: $route.meta.child === 'returns_item' }">
+        <span><i class="fa-solid fa-building-circle-exclamation"></i></span>
+        <span :class="isShow ? 'sidebar__items-title' : ''" >Returned</span>
+    </router-link>
+    <router-link to="/suppliers" active-class="sidebar__item1" class="sidebar__item">
+        <span><i class="fa-solid fa-truck-field"></i></span>
+        <span :class="isShow ? 'sidebar__items-title' : ''" >Suppliers</span>
     </router-link>
    </div>
   </section>

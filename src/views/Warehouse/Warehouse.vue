@@ -18,10 +18,6 @@ import warehouseNavbarVue from '@/components/layouts/warehouse-navbar.vue';
 import { ref } from 'vue';
 import store from '@/store';
 import {onMounted } from 'vue'
-const isShow = ref(false)
-const isShowItem =()=>{
-  isShow.value = !isShow.value
-}
 onMounted(() => {
   store.dispatch("getMe")
   store.dispatch("getGroups")
@@ -29,6 +25,10 @@ onMounted(() => {
   store.dispatch("getSuppliers")
   store.dispatch("getClients")
 })
+const isShow = ref(false)
+const isShowItem =()=>{
+  isShow.value = !isShow.value
+}
 </script>
 
 <style scoped lang="scss">

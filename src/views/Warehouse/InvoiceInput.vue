@@ -7,15 +7,16 @@
         <div class="product__lists-table">
       <app-table :headers="headers_input" :body="input_invoice_lists">
         <template #body_supplier="{ item }">
-          <span class="product__lists-table-text">{{ item.supplier.title }}</span>
+          <router-link :to="{name: 'invoice_input_item', params:{id: item.id}}" class="product__lists-table-text">{{ item.supplier.title }}</router-link>
         </template>
         <template #body_address="{ item }">
           <span class="product__lists-table-text">{{ item.supplier.address }}</span>
         </template>
-        <template #body_actions >
+        <template #body_actions="{item}">
             <div class="actions">
-                <button class="btn1">edit</button>
-                <button class="btn2">delete</button>
+                <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_input_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <span class="edit" v-if="item.status != 'confirmed'" @click="openInvoiceEdit(item, 'input-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="delete" v-if="item.status != 'confirmed'" @click="open_Input_Invoice(item.id, 'input-invoice')"><i class="fa-solid fa-trash-can"></i></span>
             </div>
         </template>
         
@@ -37,18 +38,12 @@ import {ref} from 'vue'
 import appTable from '@/components/ui/app-table.vue';
 import tabBars from '@/components/ui/tab-bars.vue';
 import http from '@/plugins/axios';
-
 import VPagination from "@hennge/vue3-pagination";
 import inputOutput from '../../components/pages/input-output.vue'
 const input_invoice = ref()
 const input_invoice_lists = ref([])
 const output_invoice_lists = ref([])
 const params_input = ref({
-  page: 1,
-  per_page: 10,
-  last_page: null,
-});
-const params_output = ref({
   page: 1,
   per_page: 10,
   last_page: null,
@@ -68,7 +63,7 @@ async function getInvoiceInput (){
             params:{
             per_page: params_input.value.per_page,
             page: params_input.value.page,
-           }
+            }
         }).then(res=>{
             input_invoice_lists.value = res.data.results
             input_invoice_lists.value.forEach((item, index) => {
@@ -86,6 +81,12 @@ async function getInvoiceInput (){
 const openInputInvoice =()=>{
     input_invoice.value.openModalInput()
 }
+const open_Input_Invoice =(id,value)=>{
+    input_invoice.value.deleteInvoices(id,value)
+}
+const openInvoiceEdit =(item,value)=>{
+    input_invoice.value.openModalOutput(item,value)
+  }
 getInvoiceInput()
 </script>
 <style scoped lang="scss">
@@ -114,30 +115,23 @@ $red-color: #ff7976;
     width: 100%;
     display: flex;
     flex-direction: column;
-    .actions{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        %btn{
-        border: none;
-        border-radius: 5px;
+    %action{
+        font-size: 18px;
         cursor: pointer;
-        color: $white-color;
-        font-size: 14px;
-        letter-spacing: 0.5px;
-        padding: 6px 13px
+        margin: 0px 5px;
     }
-    .btn1{
-        @extend %btn;
-        background-color: $blue-color2;
+    .edit{
+      @extend %action;
+      color: $blue-color2;
     }
-    .btn2{
-        @extend %btn;
-        background-color: $red-color;
+    .delete{
+      @extend %action;
+      color: $red-color;
     }
+    .eye{
+      @extend %action;
+      color: $blue-color;
     }
-    
     .product__lists-table-text{
       overflow: hidden;
       text-overflow: ellipsis;
@@ -145,6 +139,9 @@ $red-color: #ff7976;
       -webkit-line-clamp: 2; 
       -webkit-box-orient: vertical;
       color: #000;
+      &:hover{
+        color: $blue-color;
+      }
     }
     .pagination {
       width: 98%;
@@ -153,6 +150,7 @@ $red-color: #ff7976;
       justify-content: end;
       margin: 10px 0px;
     }
+    }
   }
-}
+    
 </style>

@@ -6,7 +6,8 @@ export default createStore({
     brands:[];
     groups:[];
     suppliers:[];
-    clients:[]
+    clients:[];
+    count: null
   },
   getters: {
   },
@@ -46,6 +47,12 @@ export default createStore({
     getSuppliers({commit}){
       http.get("/api/warehouse/supplier/").then((res)=>{
         commit("getSuppliers",res.data.results)
+        // this.state.suppliers.forEach(element => {
+        //   element.index =  params.value.page * params.value.per_page -
+        //   (params.value.per_page - 1) +
+        //   index;
+        // });
+        // params.value.last_page = Math.ceil(res.data.count / params.value.per_page);
       })
     },
     getClients({commit}){
