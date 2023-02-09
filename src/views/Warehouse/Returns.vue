@@ -2,7 +2,7 @@
   <section class="return">
     <returnInvoice ref="returned_invoice"/>
     <div class="return_bar">
-      <button @click="open_Modal">Add return invoice</button>
+      <button @click="open_Modal" v-if="role !== 'director'">Add return invoice</button>
     </div>
     <div class="product__lists-table">
       <app-table :headers="headers" :body="return_invoice">
@@ -18,8 +18,8 @@
         <template #body_actions="{item}">
             <div class="actions">
               <router-link class="eye" v-if="item?.status != 'confirmed'" :to="{name: 'returns_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
-                <span class="edit" v-if="item?.status != 'confirmed'" @click="openEditModal(item,item.id)" ><i class="fa-solid fa-pen-to-square"></i></span>
-                <span class="delete" v-if="item?.status != 'confirmed'" @click="openDeleteModal(item)"><i class="fa-solid fa-trash-can"></i></span>
+                <span class="edit" v-if="item?.status != 'confirmed' && role !== 'director'" @click="openEditModal(item,item.id)" ><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="delete" v-if="item?.status != 'confirmed' && role !== 'director'" @click="openDeleteModal(item)"><i class="fa-solid fa-trash-can"></i></span>
             </div>
         </template>
       </app-table>
@@ -49,6 +49,8 @@ const params = ref({
   per_page: 10,
   last_page: null,
 });
+const role = localStorage.getItem("role")
+
 const headers = ref([
   {title: "№", value:"index"},
   {title: "Client", value:"title"},

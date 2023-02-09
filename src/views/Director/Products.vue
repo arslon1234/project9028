@@ -1,20 +1,27 @@
 <template>
     <div class="product__lists">
-      <clientModal ref="client_list"/>
+      <productModal ref="product_list"/>
       <div class="product__lists-action">
-        <button @click="openModal" v-if="role !== 'director'">Add client</button>
+        <router-link to="/groups-brands" class="btn">
+          <span>Groups and Brands</span>
+          <i class="right fa-solid fa-right-long"></i>
+        </router-link>
+        <!-- <button @click="openModal" class="btn">Add Product</button> -->
       </div>
       <div class="product__lists-table">
-        <app-table :headers="headers" :body="client_lists">
-          <template #body_action="{ item }">
-            <div class="actions" v-if="role !== 'director'">
-                <span class="edit" @click="openModalEdit(item)"><i class="fa-solid fa-pen-to-square"></i></span>
-                <span class="delete" @click="openModalDelete(item)"><i class="fa-solid fa-trash-can"></i></span>
-            </div>
+        <app-table :headers="headers" :body="product_lists">
+          <template #body_group="{ item }">
+            <span>{{ item.group.title }}</span>
+          </template>
+          <template #body_brand="{ item }">
+            <span>{{ item.brand.title }}</span>
+          </template>
+          <template #body_description="{ item }">
+            <span class="product__lists-table-text">{{ item.description }}</span>
           </template>
           <template #body_title="{ item }">
-          <span class="product__lists-table-text">{{ item.title }}</span>
-        </template>
+            <router-link :to="{ name: 'single_product', params: { id: item.id } }" class="product__lists-table-text">{{ item.title }}</router-link>
+          </template>
         </app-table>
         <div class="pagination">
           <VPagination
@@ -35,10 +42,10 @@
   import http from '@/plugins/axios';
   import VPagination from "@hennge/vue3-pagination";
   import groupBrand from '@/components/pages/group-brand.vue';
-  import clientModal from '../../components/pages/sales-client.vue'
+  import productModal from '../../components/pages/product-modal.vue'
   import { onUnmounted } from 'vue';
-  const client_list = ref()
-  const client_lists = ref([])
+  const product_list = ref()
+  const product_lists = ref([])
   const params = ref({
     page: 1,
     per_page: 10,
@@ -47,20 +54,22 @@
   const headers = ref([
     {title: "№", value:"index"},
     {title: "Name", value:"title"},
-    {title: "Phone number", value:"phone_number"},
-    {title: "Address", value:"address"},
-    {title: "Action", value:"action"},
+    {title: "Code", value:"code"},
+    {title: "Brand", value:"brand"},
+    {title: "Group", value:"group"},
+    {title: "Arrival price", value:"current_arrival_price"},
+    {title: "Selling price", value:"current_selling_price"},
+    {title: "Description", value:"description"},
   ])
-const role = localStorage.getItem("role")
   const getItem =()=>{
-   http.get('/api/sales/client/',{
+   http.get('/api/warehouse/product/',{
     params:{
       per_page: params.value.per_page,
       page: params.value.page,
     }
    }).then(res=>{
-    client_lists.value = res.data.results
-    client_lists.value.forEach((item, index) => {
+    product_lists.value = res.data.results
+    product_lists.value.forEach((item, index) => {
           item.index =
             params.value.page * params.value.per_page -
             (params.value.per_page - 1) +
@@ -70,54 +79,46 @@ const role = localStorage.getItem("role")
    })
   }
   const openModal = () => {
-    client_list.value.openModal()
-  }
-  const openModalDelete = (item) => {
-    client_list.value.openDeleteModal(item)
+    product_list.value.openModal()
   }
   const openModalEdit =(item) =>{
-    client_list.value.openModal(item)
+    product_list.value.openModal(item)
   }
   getItem()
   </script>
   <style scoped lang="scss">
   $blue-color: #435EBE;
   $white-color: #fff;
-  $red-color: #ff7976;
-  $blue-color2: #57caeb;
   .product__lists{
     .product__lists-action{
       width: 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       padding: 15px;
-      button{
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      background-color: #435EBE;
-      color: $white-color;
-      cursor: pointer;
-      letter-spacing: 0.8px;
+      gap: 15px;
+      .btn{
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: $blue-color;
+        color: $white-color;
+        cursor: pointer;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        &:hover .right{
+          transform: translateX(5px);
+        }
+        .right{
+          font-size: 14px;
+          transition: all 0.3s linear;
+        }
       }
     }
     .product__lists-table{
       width: 100%;
       display: flex;
       flex-direction: column;
-      %action{
-        font-size: 18px;
-        cursor: pointer;
-        margin: 0px 5px;
-    }
-    .edit{
-      @extend %action;
-      color: $blue-color2;
-    }
-    .delete{
-      @extend %action;
-      color: $red-color;
-    }
       .product__lists-table-text{
         overflow: hidden;
         text-overflow: ellipsis;

@@ -33,7 +33,7 @@ const Go_Profile =()=>{
   }else if(role === 'salesman'){
   router.push({name: 'sales_profile'})
   }else if(role === 'director'){
-    // router.push({name: 'sales_profile'})
+    router.push({name: 'director_profile'})
   }else if(role === 'financier'){
     router.push({name: 'finance_profile'})
   }

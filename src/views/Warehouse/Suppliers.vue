@@ -4,7 +4,7 @@
         <div class="groups_brands__item">
           <div class="groups_brands__table">
             <appTable :headers="headers" :body="$store?.state.suppliers">
-              <template #body_action="{item}">
+              <template #body_action="{item}" v-if="role !== 'director'">
                 <span class="edit" @click="openModalEdit(item)"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" @click="deleteModal(item)"><i class="fa-solid fa-trash-can"></i></span>
           </template>
@@ -20,7 +20,7 @@
         </div> -->
           </div>
           <aside class="groups_brands_act">
-            <button @click="openModal">Create</button>
+            <button @click="openModal" v-if="role !== 'director'">Create</button>
           </aside>
         </div>
     </section>
@@ -32,16 +32,13 @@
   import appTable from '@/components/ui/app-table.vue';
   import suppliers from '@/components/pages/suppliers.vue';
   import store from '@/store';
-  // import {onMounted } from 'vue'
   
 const params = ref({
     page: 1,
     per_page: 10,
     last_page: null,
 });
-// onMounted(() => {
-//   store.dispatch("getSuppliers",{params})
-// })
+const role = localStorage.getItem("role")
 const supplier = ref()
 const headers = ref([
     {title: "№", value:"id"},

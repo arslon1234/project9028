@@ -1,7 +1,8 @@
 <template>
     <AppModal v-model="dialog" :width="'40%'">
         <div class="input_output">
-            <h1>Add input invoice</h1>
+            <h1 v-if="!forms_input.id">Add input invoice</h1>
+            <h1 v-else>Edit input invoice</h1>
             <Form @submit="sendInput">
              <label for="supplier">Select supplier</label>
              <Field
@@ -34,8 +35,15 @@
               </Field>
           <button
             type="submit"
+            v-if="!forms_input.id"
           >
             Add input invoice
+          </button>
+          <button
+            type="submit"
+            v-else
+          >
+            Edit input invoice
           </button>
         </Form>
         </div>
@@ -122,7 +130,7 @@
    </AppModal>
 </template>
 <script setup>
-import {ref, defineExpose} from 'vue'
+import {ref, defineExpose,watch} from 'vue'
 import AppModal from "@/components/ui/app-modal.vue";
 import http from '@/plugins/axios';
 import { Field, Form } from "vee-validate";
@@ -136,16 +144,18 @@ const dialog3 = ref(false);
 const title = ref()
 const ID = ref()
 const forms_input = ref({
+    id: null,
     supplier: null,
     description: ""
 })
 const forms_output = ref({
+    id:null,
     client: null,
     description: "",
     status: ''
 })
 const openModalInput = (item,value) => {
-    if(item && item.id) forms_input.value = item
+    if(item && item.id) forms_input.value = {...item}
     title.value = value
     dialog.value = true
 }
@@ -154,6 +164,24 @@ const openModalOutput = (item,value) => {
     title.value = value
     dialog2.value = true
 }
+watch(dialog,(value) => {
+      if (!value) {
+        forms_input.value.id = null 
+        forms_input.value.supplier = null 
+        forms_input.value.description = ''
+      }
+      
+})
+watch(dialog2,(value) => {
+      if (!value) {
+        forms_output.value.id = null 
+        forms_output.value.client = null 
+        forms_output.value.description = ''
+        forms_output.value.status = ''
+      }
+      
+})
+
 const deleteInvoices =(id, value)=>{
   title.value = value
   ID.value = id

@@ -2,7 +2,7 @@
   <section class="warehouse__invoice">
     <inputOutput ref="input_invoice"/>
     <div class="warehouse__invoice-bar">
-        <button @click="openInputInvoice">Add input invoice</button>
+        <button @click="openInputInvoice" v-if="role !== 'director'">Add input invoice</button>
     </div>
         <div class="product__lists-table">
       <app-table :headers="headers_input" :body="input_invoice_lists">
@@ -15,8 +15,8 @@
         <template #body_actions="{item}">
             <div class="actions">
                 <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_input_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
-                <span class="edit" v-if="item.status != 'confirmed'" @click="openInvoiceEdit(item, 'input-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
-                <span class="delete" v-if="item.status != 'confirmed'" @click="open_Input_Invoice(item.id, 'input-invoice')"><i class="fa-solid fa-trash-can"></i></span>
+                <span class="edit" v-if="item.status != 'confirmed' && role !== 'director'" @click="openInvoiceEdit(item, 'input-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="delete" v-if="item.status != 'confirmed' && role !== 'director'" @click="open_Input_Invoice(item.id, 'input-invoice')"><i class="fa-solid fa-trash-can"></i></span>
             </div>
         </template>
         
@@ -48,6 +48,7 @@ const params_input = ref({
   per_page: 10,
   last_page: null,
 });
+const role = localStorage.getItem("role")
 const headers_input = ref([
   {title: "№", value:"index"},
   {title: "Supplier", value:"supplier"},
@@ -85,7 +86,7 @@ const open_Input_Invoice =(id,value)=>{
     input_invoice.value.deleteInvoices(id,value)
 }
 const openInvoiceEdit =(item,value)=>{
-    input_invoice.value.openModalOutput(item,value)
+    input_invoice.value.openModalInput(item,value)
   }
 getInvoiceInput()
 </script>

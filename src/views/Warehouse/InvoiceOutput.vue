@@ -2,7 +2,7 @@
     <section class="warehouse__invoice">
       <inputOutput ref="input_invoice"/>
       <div class="warehouse__invoice-bar">
-          <button @click="openOutputInvoice">Add output invoice</button>
+          <button @click="openOutputInvoice" v-if="role !== 'director'">Add output invoice</button>
       </div>
           <div class="product__lists-table">
          <app-table :headers="headers_output" :body="output_invoice_lists">
@@ -18,8 +18,8 @@
           <template #body_actions="{item}">
               <div class="actions">
                 <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
-                <span class="edit" v-if="item.status != 'confirmed'" @click="openInvoiceEdit(item, 'output-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
-                <span class="delete" v-if="item.status != 'confirmed'" @click="open_Output_Invoice(item.id, 'output-invoice')"><i class="fa-solid fa-trash-can"></i></span>
+                <span class="edit" v-if="item.status != 'confirmed' && role !== 'director'" @click="openInvoiceEdit(item, 'output-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="delete" v-if="item.status != 'confirmed' && role !== 'director'" @click="open_Output_Invoice(item.id, 'output-invoice')"><i class="fa-solid fa-trash-can"></i></span>
               </div>
           </template>
         </app-table>
@@ -50,6 +50,7 @@ import router from '@/router';
     per_page: 10,
     last_page: null,
   });
+  const role = localStorage.getItem("role")
   const headers_output = ref([
     {title: "№", value:"index"},
     {title: "Client", value:"client"},

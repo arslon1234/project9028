@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = 'http://54.219.130.158';
+const url = 'http://54.219.22.131';
 const http = axios.create({
   baseURL: url,
 });

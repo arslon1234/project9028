@@ -84,11 +84,6 @@ const router = useRouter()
 const dialog = ref(false)
 const dialog2 = ref(false)
 const id = ref(null)
-const form = ref({
-client: null,
-description:"",
-status : ""
-})
 const forms = ref({
 client: null,
 description:"",
@@ -96,17 +91,17 @@ status : ""
 });
 const openModal = (value) => {
   if(value && value.id) {
-    forms.value = value
+    forms.value = {...value}
     id.value = value.id
   }
    dialog.value = true
-  console.log(id, 'id')
 }
 watch(dialog, (value) => {
       if (!value) {
           id.value = null;
-      }else if(value){
-        // forms.value.status = form.value
+          forms.value.client = null
+          forms.value.description = ""
+          forms.value.status = ""
       }
 })
 const openDeleteModal = (value)=>{

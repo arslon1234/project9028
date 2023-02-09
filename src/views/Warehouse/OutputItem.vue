@@ -5,7 +5,7 @@
         <span>{{ output_invoice?.client?.title }}</span>
         <span>{{ output_invoice?.total_sum }}</span>
       </div>
-      <button class="btn">Add product</button>
+      <button class="btn" v-if="role !== 'director'">Add product</button>
     </div>
     <div class="product__lists-table">
       <app-table :headers="headers_output" :body="output_invoice_item">
@@ -17,7 +17,7 @@
         </template>
       </app-table>
       <div class="pagination_action">
-        <div class="actions">
+        <div class="actions" v-if="role !== 'director'">
           <button>save</button>
           <button>confirm</button>
           <button>delete</button>
@@ -55,6 +55,7 @@ const headers_output = ref([
   {title: "Quantity", value:"quantity"},
   {title: "Invoice", value:"invoice"},
 ])
+const role = localStorage.getItem("role")
 async function getInvoiceOutput (){
     try{
             await http.get(`/api/warehouse/output-invoice/${url[4]}`).then(res=>{

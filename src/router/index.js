@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Auth/Login.vue'
 import Warehouse from '../views/Warehouse/Warehouse.vue'
 import ProductList from '../views/Warehouse/ProductList.vue'
+import ProductLists from '../views/Director/Products.vue'
 import InvoiceInput from '../views/Warehouse/InvoiceInput.vue'
 import InvoiceOutput from '../views/Warehouse/InvoiceOutput.vue'
 import InvoiceOutputItem from '../views/Warehouse/OutputItem.vue'
@@ -18,6 +19,7 @@ import Suppliers from '../views/Warehouse/Suppliers.vue'
 import Income from '../views/Finance/Income.vue'
 import Expence from '../views/Finance/Expence.vue'
 import Clients from '../views/Sales/Clients.vue'
+import ClientsLists from '../views/Director/ClientLists.vue'
 const routes = [
   {
     path: '/login',
@@ -104,7 +106,84 @@ const routes = [
   {
     path: "/director",
     name: "director",
-    component: Director
+    component: Director,
+    children:[
+      {
+        path: "/profile",
+        name:"director_profile",
+        component:Profile
+      },
+      {
+        path: "/product_list",
+        name:"product_list",
+        component:ProductLists
+      },
+      {
+        path:"/groups_brands",
+        name:"groups_brands",
+        meta:{
+          child: 'product_lists',
+        },
+        component: Groups_Brands
+      },
+      {
+        path: "/input_invoice_item/:id",
+        name:"input_invoice_item",
+        meta:{
+          child: 'input_item',
+        },
+        component:InvoiceInputItem
+      },
+      {
+        path: "/input_invoice",
+        name:"input_invoice",
+        component:InvoiceInput
+      },
+      {
+        path: "/output_invoice_item/:id",
+        name:"output_invoice_item",
+        meta:{
+          child: 'output_item',
+        },
+        component:InvoiceOutputItem
+      },
+      {
+        path: "/output_invoice",
+        name:"output_invoice",
+        component:InvoiceOutput
+      },
+      {
+        path: "/returned",
+        name:"returned",
+        component:Returns
+      },
+      {
+        path: "/supplier",
+        name:"supplier",
+        component:Suppliers
+      },
+      {
+        path: "/returned_item/:id",
+        name:"returned_item",
+        meta:{
+          child: 'returned_item'
+        },
+        component:ReturnsItem
+      },
+      {
+        path:"/single-product/:id",
+        name:"single_product",
+        meta:{
+          child: 'product_lists',
+        },
+        component: SingleProduct
+      },
+      {
+        path: '/client_lists',
+        name: 'client',
+        component: ClientsLists
+      },
+    ]
   },
   {
     path: "/sales",
@@ -165,7 +244,7 @@ router.beforeEach((to,from,next)=>{
       }else if(role === 'salesman'){
         return next({name: "clients"})
       }else if(role === 'director'){
-        return next({name: 'director'})
+        return next({name: 'product_list'})
       }else if(role === 'financier'){
         return next({name: 'income'})
       }

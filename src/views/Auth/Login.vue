@@ -124,7 +124,7 @@ const Login_With_Role =()=>{
       if(response.data.current_role === 'warehouseman'){
         router.push({name: "product-list"})
       }else if(response.data.current_role === 'director'){
-        router.push({name: "director"})
+        router.push({name: "product_list"})
       }else if(response.data.current_role === 'salesman'){
         router.push({name:'clients'})
       }else if(response.data.current_role === 'financier'){

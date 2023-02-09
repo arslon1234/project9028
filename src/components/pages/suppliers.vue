@@ -1,8 +1,8 @@
 <template>
     <AppModal v-model="dialog" :width="'50%'">
       <div class="modal">
-        <h3 v-if="!id">Add Supplier</h3>
-        <h3 v-else>Edit Supplier</h3>
+        <h3 v-if="id">Edit Supplier</h3>
+        <h3 v-else>Add Supplier</h3>
         <Form @submit="send">
              <label for="product_name">Supplier Name</label>
              <Field
@@ -30,18 +30,16 @@
              </Field>
              <button
             type="submit"
-            v-if="!id"
+            v-if="id"
           >
-            Add Supplier
+            Edit Supplier
           </button>
              <button
             type="submit"
             v-else
           >
-            Edit Supplier
+            Add Supplier
           </button>
-          
-          
         </Form>
       </div>
    </AppModal>
@@ -66,33 +64,26 @@ import { useRouter } from 'vue-router';
 import store from '@/store';
 const emits = defineEmits(['getEmployers'])
 const router = useRouter()
-const form = ref({})
 const dialog = ref(false)
 const dialog2 = ref(false)
-const issue = ref(false)
 const id = ref(null)
-const id2 = ref()
 const forms = ref({
  title: "",
  address:""
 });
 const openModal = (value) => {
    if(value && value.id) {
-    forms.value = value
+    forms.value = {...value}
     id.value = value.id
-    issue.value = true
    }
    dialog.value = true
-   console.log(id, 'id')
 }
 watch(dialog,(value) => {
       if (!value) {
-          id.value = null
+         id.value = null 
+         forms.value.title = ''
+         forms.value.address = ''
       }
-      // if(value2 === false){
-      //   forms.value.title = ''
-      //   forms.value.address = ''
-      // }
 })
 const openDeleteModal = (value)=>{
   if(value && value.id) forms.value = value
