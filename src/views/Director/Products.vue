@@ -23,15 +23,15 @@
             <router-link :to="{ name: 'single_product', params: { id: item.id } }" class="product__lists-table-text">{{ item.title }}</router-link>
           </template>
         </app-table>
-        <div class="pagination">
-          <VPagination
-            v-model="params.page"
-            :pages="params.last_page"
-            :range-size="1"
-            active-color="#EAF5FF"
-            @update:modelValue="getItem"
-          />
-        </div>
+      </div>
+      <div class="pagination">
+        <VPagination
+          v-model="params.page"
+          :pages="params.last_page"
+          :range-size="1"
+          active-color="#EAF5FF"
+          @update:modelValue="getItem"
+        />
       </div>
     </div>
   </template>
@@ -119,6 +119,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
+      overflow-x: scroll;
       .product__lists-table-text{
         overflow: hidden;
         text-overflow: ellipsis;
@@ -131,13 +132,13 @@
           font-size: 13.5px;
         }
       }
-      .pagination {
-        width: 98%;
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        margin: 10px 0px;
-      }
+    }
+    .pagination {
+      width: 98%;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      margin: 10px 0px;
     }
   }
   </style>

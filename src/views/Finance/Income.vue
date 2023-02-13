@@ -1,7 +1,8 @@
 <template>
     <div class="product__lists">
+      <financeIncome ref="finance_income"/>
     <div class="product__lists-action">
-        <button>Add income</button>
+        <button @click="openModal('sales')">Add income</button>
     </div>
       <div class="product__lists-table">
         <app-table :headers="headers" :body="income">
@@ -9,15 +10,15 @@
             <span>{{ item.brand.title }}</span>
           </template> -->
         </app-table>
-        <div class="pagination">
-          <VPagination
-            v-model="params.page"
-            :pages="params.last_page"
-            :range-size="1"
-            active-color="#EAF5FF"
-            @update:modelValue="getItem"
-          />
-        </div>
+      </div>
+      <div class="pagination">
+        <VPagination
+          v-model="params.page"
+          :pages="params.last_page"
+          :range-size="1"
+          active-color="#EAF5FF"
+          @update:modelValue="getItem"
+        />
       </div>
     </div>
   </template>
@@ -26,8 +27,10 @@
   import {ref} from 'vue'
   import appTable from '@/components/ui/app-table.vue';
   import http from '@/plugins/axios';
+  import financeIncome from '@/components/pages/finance-income.vue'
   import VPagination from "@hennge/vue3-pagination";
   const income = ref([])
+  const finance_income = ref()
   const params = ref({
     page: 1,
     per_page: 10,
@@ -38,7 +41,6 @@
     {title: "Income type", value:"income_type"},
     {title: "Invoice", value:"invoice"},
     {title: "Amount", value:"amount"},
-    {title: "Added time", value:"added_time"},
   ])
   const getItem =()=>{
    http.get('/api/finance/income/',{
@@ -47,7 +49,6 @@
       page: params.value.page,
     }
    }).then(res=>{
-    console.log(process.env.API_BASE_URL,'url')
     income.value = res.data.results
     income.value.forEach((item, index) => {
           item.index =
@@ -59,10 +60,7 @@
    })
   }
   const openModal = () => {
-    product_list.value.openModal()
-  }
-  const openModalEdit =(item) =>{
-    product_list.value.openModal(item)
+    finance_income.value.openModal()
   }
   getItem()
   </script>
@@ -89,6 +87,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
+      overflow-x: scroll;
       .product__lists-table-text{
         overflow: hidden;
         text-overflow: ellipsis;
@@ -101,13 +100,13 @@
           font-size: 13.5px;
         }
       }
-      .pagination {
-        width: 98%;
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        margin: 10px 0px;
-      }
+    }
+    .pagination {
+      width: 98%;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      margin: 10px 0px;
     }
   }
   </style>

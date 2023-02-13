@@ -1,6 +1,6 @@
 <template>
   <section class="warehouse">
-    <div :class="isShow ? 'warehouse__sidebar' : 'warehouse__sidebar1'">
+    <div :class="isShow ? 'warehouse__sidebar1' : 'warehouse__sidebar'">
       <salesSidebarVue :isShow="isShow" :isShowItem="isShowItem"/>
     </div>
     <div :class="isShow ? 'warehouse__main' : 'warehouse__main1'">
@@ -48,18 +48,32 @@ $bg-color: #F2F7FF;
     @extend %warehouse__global
   }
   .warehouse__main{
-    width: calc(100% - 62px);
+    width: calc(100% - 53px);
     @extend %warehouse__global
   }
-  .warehouse__sidebar{
+  .warehouse__sidebar1{
     width: 62px;
     transition: all 0.4s linear;
   }
-  .warehouse__sidebar1{
+  .warehouse__sidebar{
     width: 300px;
   }
   .warehouse-navbar{
-      width: 100%;
-    }
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1024px) {
+  %warehouse__global2{
+    height: 100%;
+    background-color: $bg-color;
+    transition: all 0.4s linear;
+  }
+  .warehouse__sidebar{
+    width: 62px !important;
+  }
+  .warehouse__main1{
+    width: calc(100% - 53px) !important;
+    @extend %warehouse__global2
+  }
 }
 </style>

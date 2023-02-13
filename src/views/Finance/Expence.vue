@@ -1,23 +1,30 @@
 <template>
   <div class="product__lists">
+    <financeExpense ref="finance_expense"/>
   <div class="product__lists-action">
-      <button>Add expence</button>
+      <button @click="openModal">Add expence</button>
   </div>
     <div class="product__lists-table">
       <app-table :headers="headers" :body="expence">
-        <!-- <template #body_brand="{ item }">
-          <span>{{ item.brand.title }}</span>
-        </template> -->
+        <template #body_description="{ item }">
+          <span class="product__lists-table-text">{{ item.description }}</span>
+        </template>
+        <template #body_returned_invoice="{ item }">
+          <span class="product__lists-table-text">{{ item.returned_invoice ? item.returned_invoice : 0  }}</span>
+        </template>
+        <template #body_invoice="{ item }">
+          <span class="product__lists-table-text">{{ item.invoice ? item.invoice : 0  }}</span>
+        </template>
       </app-table>
-      <div class="pagination">
-        <VPagination
-          v-model="params.page"
-          :pages="params.last_page"
-          :range-size="1"
-          active-color="#EAF5FF"
-          @update:modelValue="getItem"
-        />
-      </div>
+    </div>
+    <div class="pagination">
+      <VPagination
+        v-model="params.page"
+        :pages="params.last_page"
+        :range-size="1"
+        active-color="#EAF5FF"
+        @update:modelValue="getItem"
+      />
     </div>
   </div>
 </template>
@@ -25,9 +32,11 @@
 <script setup>
 import {ref} from 'vue'
 import appTable from '@/components/ui/app-table.vue';
+import financeExpense from '@/components/pages/finance-expense.vue'
 import http from '@/plugins/axios';
 import VPagination from "@hennge/vue3-pagination";
 const expence = ref([])
+const finance_expense = ref()
 const params = ref({
   page: 1,
   per_page: 10,
@@ -35,14 +44,13 @@ const params = ref({
 });
 const headers = ref([
   {title: "№", value:"index"},
-  {title: "Cost type", value:"cost_type"},
   {title: "Invoice", value:"invoice"},
   {title: "Returned invoice", value:"returned_invoice"},
   {title: "Amount", value:"amount"},
   {title: "Description", value:"description"},
 ])
 const getItem =()=>{
- http.get('/api/finance/expence/',{
+ http.get('/api/finance/expense/',{
   params:{
     per_page: params.value.per_page,
     page: params.value.page,
@@ -59,10 +67,7 @@ const getItem =()=>{
  })
 }
 const openModal = () => {
-  product_list.value.openModal()
-}
-const openModalEdit =(item) =>{
-  product_list.value.openModal(item)
+  finance_expense.value.openModal()
 }
 getItem()
 </script>
@@ -89,6 +94,7 @@ $white-color: #fff;
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
     .product__lists-table-text{
       overflow: hidden;
       text-overflow: ellipsis;
@@ -96,18 +102,14 @@ $white-color: #fff;
       -webkit-line-clamp: 2; 
       -webkit-box-orient: vertical;
       color: #000;
-      &:hover{
-        color: $blue-color;
-        font-size: 13.5px;
-      }
     }
-    .pagination {
-      width: 98%;
-      display: flex;
-      align-items: center;
-      justify-content: end;
-      margin: 10px 0px;
-    }
+  }
+  .pagination {
+    width: 98%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin: 10px 0px;
   }
 }
 </style>

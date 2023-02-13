@@ -4,12 +4,13 @@
             <h1 v-if="!forms_input.id">Add input invoice</h1>
             <h1 v-else>Edit input invoice</h1>
             <Form @submit="sendInput">
-             <label for="supplier">Select supplier</label>
+             <label for="supplier" v-if="!forms_input.id">Select supplier</label>
              <Field
                 rules="required"
                 :modelValue="forms_input.supplier"
                 v-slot="{ errors }"
                 name="Supplier"
+                v-if="!forms_input.id"
               >
               <select v-model="forms_input.supplier">
              <option disabled selected hidden value="">Select your supplier</option>
@@ -189,16 +190,29 @@ const deleteInvoices =(id, value)=>{
 }
 async function sendInput() {
  try {
-       await http.post('/api/warehouse/input-invoice/', {
+  if(!forms_input.value.id){
+    await http.post('/api/warehouse/input-invoice/', {
         supplier: forms_input.value.supplier,
         description: forms_input.value.description
        }).then(res=>{
         if(res.status === 201){
           router.push({name: 'invoice_input_item', params:{id: res.data.id}})
         }
-       })
-       dialog.value = false
-    Notification({ text: "Invoce addedd !!!" },{type: 'success'})
+    })
+  }else await http.put(`/api/warehouse/${title.value}/${forms_input.value.id}/`,{
+    // supplier: forms_input.value.supplier,
+    description: forms_input.value.description
+  }).then(res=>{
+    if(res.status === 200){
+          location.reload()
+    }
+  })
+    dialog.value = false
+    if(!forms_input.value.id){
+    Notification({ text: "Invoice added !!!" },{type: 'success'})
+  }else{
+    Notification({ text: "Invoice updated !!!" },{type: 'warning'})
+  }
  } catch(err) {
    console.log(err);
     Notification({ text: "Something wrong !!!" },{type: 'danger'}

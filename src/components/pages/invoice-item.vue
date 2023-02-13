@@ -2,14 +2,16 @@
     <AppModal v-model="dialog" :width="'40%'">
         <div class="Password">
             <div class="Password__change">
-                <h1>Add product</h1>
+              <h1 v-if="form.index">Edit product</h1>
+              <h1 v-else>Add product</h1>
          <Form @submit="send">
-        <label for="product">Select product</label>
+        <label for="product" v-if="!form.index">Select product</label>
         <Field
         rules="required"
         :modelValue="form.product"
         v-slot="{ errors }"
         name="Product"
+        v-if="!form.index"
         >
         <select id="product" class="form__select" v-model="form.product">
           <option disabled selected hidden value="">Select product group</option>
@@ -19,21 +21,6 @@
           {{ errors[0] }}
         </p>
         </Field>
-        <!-- <label for="product">Select supplier</label>
-        <Field
-        rules="required"
-        :modelValue="form.invoice"
-        v-slot="{ errors }"
-        name="Supplier"
-        >
-        <select id="product" class="form__select" v-model="form.invoice">
-          <option disabled selected hidden value="">Select supplier</option>
-          <option :value="item.id" v-for="item in $store?.state?.suppliers" :key="item.id">{{ item.title }}</option>
-        </select>
-       <p class="login__input-error" v-if="errors && errors.length">
-          {{ errors[0] }}
-        </p>
-        </Field> -->
         <label for="quantity">Quantity</label>
         <Field
         rules="required"
@@ -58,53 +45,132 @@
           {{ errors[0] }}
         </p>
         </Field>
-        <button type="submit">Add product</button>
+        <button type="submit" v-if="form.index">Edit product</button>
+        <button type="submit" v-else>Add product</button>
       </Form>
     </div>
     </div>
    </AppModal>
+   <AppModal v-model="dialog2" :width="'40%'">
+      <div class="modal">
+        <h3>Are you sure you want to deletes ?</h3>
+        <div class="modal_act">
+          <button class="btn1" @click="dialog2 = false">cancel</button>
+          <button class="btn2" @click="deleteModal">delete</button>
+        </div>
+      </div>
+   </AppModal>
 </template>
 <script setup>
-import {ref, defineExpose} from 'vue'
+import {ref, defineExpose,watch} from 'vue'
 import { Field, Form } from "vee-validate";
 import AppModal from "@/components/ui/app-modal.vue";
 import Notification from '@/plugins/Notification';
 import http from '@/plugins/axios';
 const dialog = ref(false)
+const dialog2 = ref(false)
+const ID = ref(null)
+const invoice = ref(null)
 const form = ref({
+  index: null,
   product: null,
-  invoice: null,
   quantity: "",
   price: "",
 })
-const openModal= () => {
+const openModal= (id,title) => {
    dialog.value = true
+   invoice.value = title
+   ID.value = id
 }
+const openModalEdit = (item,title) => {
+  if(item && item.product.id) {
+    form.value = {...item}
+  }
+  invoice.value = title
+  dialog.value = true
+}
+const openModalDelete = (item,title) => {
+  if(item && item.id) {
+    form.value = {...item}
+  }
+  invoice.value = title
+  dialog2.value = true
+}
+watch(dialog,(value) => {
+      if (!value) {
+         form.value.index = ''
+         form.value.product = ''
+         form.value.quantity = ''
+         form.value.price = '',
+         invoice.value = null
+      }
+})
+watch(dialog2,(value) => {
+      if (!value) {
+         form.value.index = ''
+         form.value.product = ''
+         form.value.quantity = ''
+         form.value.price = ''
+         invoice.value = null
+      }
+})
 async function send() {
  try {
-       await http.post('/api/warehouse/input-invoice-item/', {
-        product: form.value.product,
-        // invoice:form.value.invoice,
-        quantity:form.value.quantity,
-        price:form.value.price
-       }).then(res=>{
-        console.log(res.status)
-        if(res.status === 200){
-            Notification({ text: "Everything is okay !!!" },{type: "success"})
-        }
-       })
-    dialog.value = false
+  if(!form.value.id){
+    await http.post(`/api/warehouse/${invoice.value}/`, {
+     product: form.value.product,
+     invoice: ID.value,
+     quantity:form.value.quantity,
+     price:form.value.price
+    }).then(res=>{
+     if(res.status === 201){
+       location.reload()
+     }
+   })
+  }else {
+    await http.put(`/api/warehouse/${invoice.value}/${form.value.id}/`,{
+     quantity:form.value.quantity,
+     price:form.value.price
+    }).then(res=>{
+    if(res.status === 200){
+      location.reload()
+    }
+  })
+  }
+  dialog.value = false
+  if(!form.value.id){
+    Notification({ text: "Invoice item added !!!" },{type: 'success'})
+  }else{
+    Notification({ text: "Invoice item updated !!!" },{type: 'warning'})
+  }
  } catch(err) {
    console.log(err);
    Notification({ text: "Something wrong !!!"}, {type: 'danger'})
  }
 }
-defineExpose({openModal})
+async function deleteModal () {
+  try{
+    await Notification({ text: "Invoice item deleted !!!" },{type: 'danger'})
+     http.delete(`/api/warehouse/${invoice.value}/${form.value.id}`).then(res=>{
+      if(res.status === 204){
+        location.reload()
+      }
+    })
+   dialog2.value = false
+  }catch(err){
+    console.log(err)
+    Notification({ text: "Something wrong !!!" },{type: 'danger'})
+  }
+}
+defineExpose({openModal, openModalEdit,openModalDelete})
 </script>
 
 <style scoped lang="scss">
 $blue-color: #435ebe;
 $input_bg: #edf2f7;
+$white-color: #fff;
+$blue-color2: #57caeb;
+$red-color: #ff7976;
 .Password{
     width: 100%;
     display: flex;
@@ -231,5 +297,40 @@ $input_bg: #edf2f7;
       }
 }
   }
+}
+.modal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h3{
+  text-align: center;
+  margin: 10px 0px;
+  font-size: 25px;
+}
+.modal_act{
+        margin-top: 40px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        %btn{
+            padding: 15px 50px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            color: $white-color;
+            cursor: pointer
+        }
+        .btn1{
+            @extend %btn;
+            background-color: $blue-color2;
+        }
+        .btn2{
+            @extend %btn;
+            background-color: $red-color;
+        }
+}
 }
 </style>

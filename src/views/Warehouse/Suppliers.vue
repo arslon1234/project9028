@@ -44,6 +44,7 @@ const headers = ref([
     {title: "№", value:"id"},
     {title: "Name", value:"title"},
     {title: "Address", value:"address"},
+    {title: "Credit", value:"credit"},
     {title: "Action", value:"action"},
   ])
   const deleteModal = (item) =>{
@@ -69,6 +70,7 @@ const headers = ref([
     .groups_brands__item{
       width: 100%;
       margin-top: 20px;
+      overflow-x: scroll;
       .groups_brands__table{
         width: 100%;
         .delete_btn{

@@ -13,11 +13,14 @@
           <span>{{ item.client.phone_number }}</span>
         </template>
         <template #body_address="{ item }">
-          <span>{{ item.client.address }}</span>
+          <span class="product__lists-table-text">{{ item.client.address }}</span>
+        </template>
+        <template #body_description="{ item }">
+          <span class="product__lists-table-text">{{ item.description }}</span>
         </template>
         <template #body_actions="{item}">
             <div class="actions">
-              <router-link class="eye" v-if="item?.status != 'confirmed'" :to="{name: 'returns_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+              <router-link class="eye" :to="{name: 'returns_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
                 <span class="edit" v-if="item?.status != 'confirmed' && role !== 'director'" @click="openEditModal(item,item.id)" ><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" v-if="item?.status != 'confirmed' && role !== 'director'" @click="openDeleteModal(item)"><i class="fa-solid fa-trash-can"></i></span>
             </div>
@@ -122,9 +125,11 @@ $red-color: #ff7976;
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
     .actions{
       display: flex;
       align-items: center;
+      justify-content: center;
       %action{
           font-size: 18px;
           cursor: pointer;
@@ -150,9 +155,6 @@ $red-color: #ff7976;
       -webkit-line-clamp: 2; 
       -webkit-box-orient: vertical;
       color: #000;
-      &:hover{
-        color: $blue-color;
-      }
     }
     .pagination {
       width: 98%;

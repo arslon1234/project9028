@@ -124,7 +124,6 @@ async function send(event) {
         }
        })
    }
-  //  else await axios.post(`http://localhost:3000/items`, form)
   Notification({ text: "Everything is okay !!!" },{type: 'success'})
    dialog.value = false
  } catch(err) {

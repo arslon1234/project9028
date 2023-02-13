@@ -1,164 +1,143 @@
 <template>
     <AppModal v-model="dialog" :width="'50%'">
       <div class="modal">
-        <h3 v-if="!form.id">Add Client</h3>
-        <h3 v-else>Edit Client</h3>
+        <h3>Add Income</h3>
         <Form @submit="send">
-             <label for="product_name">Client Name</label>
+             <label for="brand">Select income type</label>
              <Field
                 rules="required"
-                :modelValue="form.title"
+                :modelValue="forms.income_type"
                 v-slot="{ errors }"
-                name="Client Name"
+                name="Income type"
               >
-            <input class="form__input" type="text" id="product_name" placeholder="Client Name" v-model="form.title">
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-              </Field>
-             <label for="desc">Address</label>
-             <Field
-                rules="required"
-                :modelValue="form.address"
-                v-slot="{ errors }"
-                name="Address"
-              >
-            <input class="form__input" type="text" id="product_name" placeholder="Address" v-model="form.address">
+              <select id="brand" class="form__select" v-model="forms.income_type" @change="handechange($event)">
+                <option disabled selected hidden value="">Select product brand</option>
+                <option value="from_sales">From sales</option>
+                <option value="from_outside">From outside</option>
+              </select>
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
              </Field>
-             <label for="desc">Phone numbers</label>
+             <label for="product" v-if="forms.title === 'from_sales'">Select sales</label>
              <Field
-                rules="required"
-                :modelValue="form.phone_number"
-                v-slot="{ errors }"
-                name="Phone number"
-              >
-            <input class="form__input" type="tel" id="product_name" placeholder="Phone number" v-model="form.phone_number" v-mask="'998#########'">
+             rules="required"
+             :modelValue="forms.invoice"
+             v-slot="{ errors }"
+             name="select sales"
+             v-if="forms.title === 'from_sales'"
+             >
+             <select id="product" class="form__select" v-model="forms.invoice">
+               <option disabled selected hidden value="">Select sales</option>
+               <option :value="item.id" v-for="item in output_invoice_lists" :key="item.id">{{ item?.client?.title }}</option>
+             </select>
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
              </Field>
+             <label for="desc">Amount</label>
+             <Field
+                rules="required"
+                :modelValue="forms.amount"
+                v-slot="{ errors }"
+                name="Amount"
+              >
+              <input class="form__input" type="number" id="product_name" placeholder="Amount" v-model="forms.amount">
+            <p class="login__input-error" v-if="errors && errors.length">
+               {{ errors[0] }}
+             </p>
+             </Field>
+            
           <button
             type="submit"
-            v-if="!form.id"
           >
-            Add Client
+            Add income
           </button>
-          <button
-            type="submit"
-             v-else
-          >
-            Edit Client
-          </button>
+         
         </Form>
       </div>
    </AppModal>
-   <AppModal v-model="dialog2" :width="'40%'">
-      <div class="modal">
-        <h3>Are you sure you want to delete ?</h3>
-        <div class="modal_act">
-          <button class="btn1" @click="dialog2 = false">cancel</button>
-          <button class="btn2" @click="deleteModal">delete</button>
-        </div>
-      </div>
-   </AppModal>
-
-</template>
-<script setup>
-import {ref, defineExpose,watch} from 'vue'
-import { Field, Form } from "vee-validate";
-import AppModal from "@/components/ui/app-modal.vue";
-import Notification from '@/plugins/Notification';
-import http from '@/plugins/axios';
-import { useRouter } from 'vue-router';
-import store from '@/store';
-const emits = defineEmits(['getEmployers'])
-const router = useRouter()
-const dialog = ref(false)
-const dialog2 = ref(false)
-const file = ref(null)
-const forms = ref({
- id:null,
- title: "",
- address:"",
- phone_number: ""
-});
-const form = ref({forms})
-const openModal = (value) => {
-   if(value && value.id) form.value = {...value}
-   dialog.value = true
-}
-watch(dialog,(value)=>{
-  if(!value){
-    form.value = {...forms}
+  </template>
+  <script setup>
+  import {ref, defineExpose, watch} from 'vue'
+  import { Field, Form } from "vee-validate";
+  import AppModal from "@/components/ui/app-modal.vue";
+  import Notification from '@/plugins/Notification';
+  import http from '@/plugins/axios';
+  import { useRouter } from 'vue-router';
+  import store from '@/store';
+  const router = useRouter()
+  const dialog = ref(false)
+  const output_invoice_lists = ref([])
+  const forms = ref({
+  income_type: "",
+  amount: "",
+  invoice: null,
+  title: false
+  });
+  const openModal = (item) => {
+    dialog.value = true
+    forms.value.title = item
   }
-})
-const openDeleteModal = (value)=>{
-  if(value && value.id) forms.value = {...value}
-  dialog2.value = true
-}
-async function send(event) {
- try {
-   if(!form.value.id) {
-       await http.post('/api/sales/client/',{
-        title: form.value.title,
-        address: form.value.address,
-        phone_number: form.value.phone_number
+  const handechange=(event)=>{
+    console.log(event.target.value, 'type')
+    if(event.target.value === 'from_sales'){
+        forms.value.title = 'from_sales'
+    }else{
+        forms.value.title = 'from_outside'
+    }
+  }
+  watch(dialog, (value) => {
+        if (!value) {
+            forms.value.income_type = ""
+            forms.value.amount = ""
+            forms.value.invoice = null
+            forms.value.title = false
+        }
+  })
+  async function send(event) {
+  try {
+       await http.post('/api/finance/income/',{
+        income_type: forms.value.income_type,
+        amount: forms.value.amount,
+        invoice: forms.value.invoice
        }).then(res=>{
         if(res.status === 201){
           location.reload()
         }
        })
-   }
-   else await http.put(`/api/sales/client/${form.value.id}/`, {
-    title: form.value.title,
-    address: form.value.address,
-    phone_number: form.value.phone_number
-   }).then(res=>{
-    if(res.status === 200){
-        location.reload()
-    }
-  })
-  if(!form.value.id){
-    Notification({ text: "Client added !!!" },{type: 'success'})
-  }else{
-    Notification({ text: "Client updated !!!" },{type: 'warning'})
-  }
-  dialog.value = false
- } catch(err) {
+    dialog.value = false
+    Notification({ text: "Income added !!!" },{type: 'success'})
+  
+  } catch(err) {
    console.log(err);
     Notification({ text: "Something wrong !!!" },{type: 'danger'}
    )
- }
-}
-async function deleteModal () {
-  try{
-    await Notification({ text: "Client deleted !!!" },{type: 'danger'})
-     http.delete(`/api/sales/client/${forms.value.id}`).then(res=>{
-      console.log(res)
-      if(res.status === 204){
-        location.reload()
-      }
-    })
-   dialog2.value = false
-  }catch(err){
-    console.log(err)
-    Notification({ text: "Something wrong !!!" },{type: 'danger'})
   }
-}
-defineExpose({openModal,openDeleteModal})
-</script>
-
-<style scoped lang="scss">
-$blue-color: #435ebe;
-$input_bg: #edf2f7;
-$hover-color: #f0f1f5;
-$white-color: #fff;
-$blue-color2: #57caeb;
-$red-color: #ff7976;
-.modal{
+  }
+  async function getInvoiceOutput (){
+      try{
+              await http.get('/api/warehouse/output-invoice').then(res=>{
+              output_invoice_lists.value = res.data.results
+              console.log(output_invoice_lists.value,'value-issue')
+          })
+          
+      }catch(err){
+          console.log(err)
+      }
+  }
+  getInvoiceOutput()
+  defineExpose({openModal})
+  </script>
+  
+  <style scoped lang="scss">
+  $blue-color: #435ebe;
+  $input_bg: #edf2f7;
+  $hover-color: #f0f1f5;
+  $white-color: #fff;
+  $blue-color2: #57caeb;
+  $red-color: #ff7976;
+  .modal{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,8 +146,8 @@ $red-color: #ff7976;
   text-align: center;
   margin: 10px 0px;
   font-size: 25px;
-}
-Form {
+  }
+  Form {
       width: 70%;
       margin: 15px 0px;
       display: flex;
@@ -271,8 +250,8 @@ Form {
         border-radius: 5px;
         cursor: pointer;
       }
-}
-.modal_act{
+  }
+  .modal_act{
         margin-top: 40px;
         width: 100%;
         display: flex;
@@ -296,6 +275,6 @@ Form {
             background-color: $red-color;
         }
     }
-}
-
-</style>
+  }
+  
+  </style>

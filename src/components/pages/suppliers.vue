@@ -28,6 +28,19 @@
                {{ errors[0] }}
              </p>
              </Field>
+             <label for="desc" v-if="!id">Credit</label>
+             <Field
+                rules="required"
+                :modelValue="forms.credit"
+                v-slot="{ errors }"
+                name="Credit"
+                v-if="!id"
+              >
+            <input class="form__input" type="number" id="product_name" placeholder="Credit" v-model="forms.credit">
+            <p class="login__input-error" v-if="errors && errors.length">
+               {{ errors[0] }}
+             </p>
+             </Field>
              <button
             type="submit"
             v-if="id"
@@ -69,7 +82,8 @@ const dialog2 = ref(false)
 const id = ref(null)
 const forms = ref({
  title: "",
- address:""
+ address:"",
+ credit:""
 });
 const openModal = (value) => {
    if(value && value.id) {
@@ -92,26 +106,28 @@ const openDeleteModal = (value)=>{
 }
 async function send(event) {
  try {
-   if(!forms.value.id) {
+   if(!id.value) {
        await http.post('/api/warehouse/supplier/',{
         title: forms.value.title,
-        address: forms.value.address
+        address: forms.value.address,
+        credit: forms.value.credit
        }).then(res=>{
         if(res.status === 201){
           location.reload()
         }
        })
    }
-   else await http.put(`/api/warehouse/supplier/${forms.value.id}/`, {
+   else await http.put(`/api/warehouse/supplier/${id.value}/`, {
     title: forms.value.title,
-    address: forms.value.address
+    address: forms.value.address,
+    credit: forms.value.credit
    }).then(res=>{
-    if(res.status === 201){
-        location.reload()
-    }
+    // if(res.status === 200){
+    //     location.reload()
+    // }
   })
   dialog.value = false
-  if(!forms.value.id){
+  if(!id.value){
     Notification({ text: "Supplier added !!!" },{type: 'success'})
   }else{
     Notification({ text: "Supplier updated !!!" },{type: 'warning'})
@@ -124,7 +140,7 @@ async function send(event) {
 }
 async function deleteModal () {
   try{
-    await Notification({ text: "Product deleted !!!" },{type: 'danger'})
+    await Notification({ text: "Supplier deleted !!!" },{type: 'danger'})
      http.delete(`/api/warehouse/supplier/${id.value}`).then(res=>{
       console.log(res)
       if(res.status === 204){
@@ -284,7 +300,7 @@ Form {
             @extend %btn;
             background-color: $red-color;
         }
-    }
+}
 }
 
 </style>

@@ -109,7 +109,7 @@ const routes = [
     component: Director,
     children:[
       {
-        path: "/profile",
+        path: "/director_profile",
         name:"director_profile",
         component:Profile
       },
@@ -196,7 +196,7 @@ const routes = [
         component: Clients
       },
       {
-        path: "/profile",
+        path: "/sales_profile",
         name:"sales_profile",
         component:Profile
       },
@@ -218,7 +218,7 @@ const routes = [
         component: Expence
       },
       {
-        path: "/profile",
+        path: "/finance_profile",
         name:"finance_profile",
         component:Profile
       },

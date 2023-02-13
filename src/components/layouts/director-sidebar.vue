@@ -45,69 +45,105 @@
   </script>
   
   <style scoped lang="scss">
-  $blue-color: #435EBE;
-  $hover-color: #f0f1f5;
-  $bg-color: #fff;
-  .sidebar1{
-      width: 62px;
-      height: 100vh;
-      position: fixed;
-      background-color: $bg-color;
-      transition: all 0.4s linear;
-  }
-  .sidebar{
-      width: 300px;
-      height: 100vh;
-      position: fixed;
-      background-color: $bg-color;
-      transition: all 0.4s linear;
-  }
-  .sidebar__img{
-          margin: 20px;
-          .img-icon{
-              font-size: 20px;
-              color: $blue-color;
-              cursor: pointer;
-          }
-      }
-      .sidebar__items{
-          width: 100%;
-          margin-top: 70px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          @mixin sidebar__item($color, $bg_color){
-              color: $color;
-              background-color: $bg_color;
-          }
-          .sidebar__items-title{
-              display: none;
-          }
-          %sidebar_item{
-              display: block;
-              width: 90%;
-              margin: 10px;
-              padding: 12px 17px;
-              font-size: 18px;
-              display: flex;
-              align-items: center;
-              gap: 15px;
-              border-radius: 5px;
-              cursor: pointer
-          }
-          .sidebar__item{
-              @extend %sidebar_item;
-              @include sidebar__item($blue-color, transparent);
-              &:hover{
-                  background-color: $hover-color;
-              }
-          }
-          .sidebar__item1{
-              @extend %sidebar_item;
-              @include sidebar__item(#fff, $blue-color);
-              &:hover{
-                  background-color: $blue-color;
-              }
-          }
-      }
-  </style>
+$blue-color: #435EBE;
+$hover-color: #f0f1f5;
+$bg-color: #fff;
+.sidebar1{
+    width: 53px;
+    height: 100vh;
+    position: fixed;
+    background-color: $bg-color;
+    transition: all 0.4s linear;
+    overflow: hidden;
+}
+.sidebar{
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    background-color: $bg-color;
+    transition: all 0.4s linear;
+    overflow: hidden;
+}
+.sidebar__img{
+        margin: 20px;
+        .img-icon{
+            font-size: 20px;
+            color: $blue-color;
+            cursor: pointer;
+        }
+}
+.sidebar__items{
+        width: 100%;
+        margin-top: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @mixin sidebar__item($color, $bg_color){
+            color: $color;
+            background-color: $bg_color;
+        }
+        %sidebar_item{
+            width: 90%;
+            margin: 10px;
+            padding: 12px 17px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-radius: 5px;
+            cursor: pointer
+        }
+        .sidebar__item{
+            @extend %sidebar_item;
+            @include sidebar__item($blue-color, transparent);
+            &:hover{
+                background-color: $hover-color;
+            }
+        }
+        .sidebar__item1{
+            @extend %sidebar_item;
+            @include sidebar__item(#fff, $blue-color);
+            &:hover{
+                background-color: $blue-color;
+            }
+        }
+}
+@media screen and (max-width: 1024px) {
+    .sidebar{
+    width: 53px;
+    height: 100vh;
+    position: fixed;
+    background-color: $bg-color;
+    transition: all 0.4s linear;
+    overflow: hidden;
+}
+.sidebar1{
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    background-color: $bg-color;
+    transition: all 0.4s linear;
+    z-index: 999;
+    overflow: visible;
+}
+
+
+@mixin sidebar__item($color, $bg_color){
+    color: $color;
+    background-color: $bg_color;
+}
+%sidebar_item{
+    display: block;
+    width: 90%;
+    margin: 10px;
+    padding: 12px 17px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 5px;
+    cursor: pointer
+}
+
+}
+</style>

@@ -20,19 +20,6 @@
              {{ errors[0] }}
            </p>
            </Field>
-           <label for="status" v-if="id">Status</label>
-           <Field
-              rules="required"
-              :modelValue="forms.status"
-              v-slot="{ errors }"
-              name="Status"
-              v-if="id"
-            >
-            <input class="form__input" type="text" id="status" placeholder="Status" v-model="forms.status">
-          <p class="login__input-error" v-if="errors && errors.length">
-             {{ errors[0] }}
-           </p>
-           </Field>
            <label for="desc">Description</label>
            <Field
               rules="required"
@@ -112,7 +99,8 @@ async function send(event) {
 try {
  if(!id.value) {
      await http.post('/api/warehouse/returned-invoice/',{
-      client: forms.value.client
+      client: forms.value.client,
+      description: forms.value.description
      }).then(res=>{
       if(res.status === 201){
         location.reload()
@@ -120,10 +108,9 @@ try {
      })
  }
  else await http.put(`/api/warehouse/returned-invoice/${id.value}/`,{
-  status: forms.value.status,
   description: forms.value.description
  }).then(res=>{
-  if(res.status === 201){
+  if(res.status === 200){
     location.reload()
   }
 })

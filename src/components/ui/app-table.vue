@@ -42,7 +42,7 @@
     padding: 10px;
     border-collapse: separate;
     border-spacing: 0;
-    overflow: scroll;
+    overflow-x: scroll;
     thead {
       background-color: #eaf5fb;
       th {

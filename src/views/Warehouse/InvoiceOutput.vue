@@ -17,7 +17,7 @@
           </template>
           <template #body_actions="{item}">
               <div class="actions">
-                <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <router-link class="eye" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
                 <span class="edit" v-if="item.status != 'confirmed' && role !== 'director'" @click="openInvoiceEdit(item, 'output-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" v-if="item.status != 'confirmed' && role !== 'director'" @click="open_Output_Invoice(item.id, 'output-invoice')"><i class="fa-solid fa-trash-can"></i></span>
               </div>
@@ -121,10 +121,12 @@ import router from '@/router';
       width: 100%;
       display: flex;
       flex-direction: column;
+      overflow-x: scroll;
       .actions{
           width: 100%;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 5px;
          %action{
         font-size: 18px;

@@ -116,9 +116,10 @@ $green-color: #e7e732;
         border-radius: 10px;
         padding: 50px 15px;
         display: flex;
+        gap: 40px;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         .profile__item1{
             display: flex;
             flex-direction: column;
@@ -200,4 +201,5 @@ $green-color: #e7e732;
     }
 
 }
+
 </style>

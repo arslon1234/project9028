@@ -14,7 +14,7 @@
         </template>
         <template #body_actions="{item}">
             <div class="actions">
-                <router-link class="eye" v-if="item.status != 'confirmed'" :to="{name: 'invoice_input_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <router-link class="eye" :to="{name: 'invoice_input_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
                 <span class="edit" v-if="item.status != 'confirmed' && role !== 'director'" @click="openInvoiceEdit(item, 'input-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" v-if="item.status != 'confirmed' && role !== 'director'" @click="open_Input_Invoice(item.id, 'input-invoice')"><i class="fa-solid fa-trash-can"></i></span>
             </div>
@@ -67,6 +67,7 @@ async function getInvoiceInput (){
             }
         }).then(res=>{
             input_invoice_lists.value = res.data.results
+            console.log(res.data.results,'invoiceInput')
             input_invoice_lists.value.forEach((item, index) => {
             item.index = params_input.value.page * params_input.value.per_page -
             (params_input.value.per_page - 1) +
@@ -116,6 +117,7 @@ $red-color: #ff7976;
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
     %action{
         font-size: 18px;
         cursor: pointer;
