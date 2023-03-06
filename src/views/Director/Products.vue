@@ -2,7 +2,7 @@
     <div class="product__lists">
       <productModal ref="product_list"/>
       <div class="product__lists-action">
-        <router-link to="/groups-brands" class="btn">
+        <router-link to="/groups_brands" class="btn">
           <span>Groups and Brands</span>
           <i class="right fa-solid fa-right-long"></i>
         </router-link>

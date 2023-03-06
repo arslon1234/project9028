@@ -17,7 +17,7 @@
           <span class="product__lists-table-text">{{ item.product.code }}</span>
         </template>
         <template #body_actions="{item}">
-            <div class="action">
+            <div class="action" v-if="role !== 'director'">
                 <span class="edit" @click="editProduct(item,'returned-invoice-item')" v-if="output_invoice?.status !== 'confirmed'"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" @click="deleteProduct(item,'returned-invoice-item')" v-if="output_invoice?.status !== 'confirmed'"><i class="fa-solid fa-trash-can"></i></span>
             </div>

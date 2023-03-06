@@ -124,7 +124,7 @@ const Login_With_Role =()=>{
       if(response.data.current_role === 'warehouseman'){
         router.push({name: "product-list"})
       }else if(response.data.current_role === 'director'){
-        router.push({name: "product_list"})
+        router.push({name: "dashboard"})
       }else if(response.data.current_role === 'salesman'){
         router.push({name:'clients'})
       }else if(response.data.current_role === 'financier'){
@@ -256,6 +256,22 @@ $input_bg: #edf2f7;
         background-color: $blue-color;
         border-radius: 5px;
         cursor: pointer;
+      }
+    }
+  }
+  @media (max-width: 990px) {
+    .Login__item{
+      width: 80%;
+      Form{
+        width: 80%;
+      }
+    }
+  }
+  @media (max-width: 576px) {
+    .Login__item{
+      width: 90%;
+      Form{
+        width: 90%;
       }
     }
   }

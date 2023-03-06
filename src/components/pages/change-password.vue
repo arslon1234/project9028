@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog2" :width="'40%'">
+    <AppModal v-model="dialog2">
         <div class="Password">
             <div class="Password__change">
                 <h1>Change password</h1>

@@ -1,5 +1,5 @@
 <template>
-  <AppModal v-model="dialog" :width="'50%'">
+  <AppModal v-model="dialog">
     <div class="modal">
       <h3 v-if="id">Edit Product</h3>
       <h3 v-else>Add Product</h3>
@@ -48,7 +48,7 @@
       </Form>
     </div>
  </AppModal>
- <AppModal v-model="dialog2" :width="'40%'">
+ <AppModal v-model="dialog2">
     <div class="modal">
       <h3>Are you sure to want to delete ?</h3>
       <div class="modal_act">
@@ -287,7 +287,25 @@ Form {
           @extend %btn;
           background-color: $red-color;
       }
-  }
+}
+@media (max-width: 576px) {
+      Form{
+        width: 90%;
+      }
+      .modal_act{
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        %btn{
+            padding: 10px 30px;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+}
+}
 }
 
 </style>

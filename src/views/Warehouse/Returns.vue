@@ -74,7 +74,6 @@ async function getInvoiceReturned (){
            }}
            ).then(res=>{
           return_invoice.value = res.data.results
-          console.log(res.data.results)
           return_invoice.value.forEach((item, index) => {
             item.index = params.value.page * params.value.per_page -
             (params.value.per_page - 1) +

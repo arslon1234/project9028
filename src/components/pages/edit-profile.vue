@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog" :width="'50%'">
+    <AppModal v-model="dialog">
       <div class="modal">
         <h3 v-if="!forms.id">Add Product</h3>
         <h3 v-else>{{ props.title_text }}</h3>
@@ -245,6 +245,24 @@ Form {
         border-radius: 5px;
         cursor: pointer;
       }
+}
+@media (max-width: 576px) {
+      Form{
+        width: 90%;
+      }
+      .modal_act{
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        %btn{
+            padding: 10px 30px;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+}
 }
 }
 

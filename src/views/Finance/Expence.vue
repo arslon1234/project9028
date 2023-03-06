@@ -2,7 +2,7 @@
   <div class="product__lists">
     <financeExpense ref="finance_expense"/>
   <div class="product__lists-action">
-      <button @click="openModal">Add expence</button>
+      <button @click="openModal" v-if="role !== 'director'">Add expence</button>
   </div>
     <div class="product__lists-table">
       <app-table :headers="headers" :body="expence">
@@ -49,6 +49,7 @@ const headers = ref([
   {title: "Amount", value:"amount"},
   {title: "Description", value:"description"},
 ])
+const role = localStorage.getItem("role")
 const getItem =()=>{
  http.get('/api/finance/expense/',{
   params:{

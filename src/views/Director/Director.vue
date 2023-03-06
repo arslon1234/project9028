@@ -38,7 +38,7 @@ $bg-color: #F2F7FF;
 
 .warehouse{
   width: 100%;
-  height: 100vh;
+  max-height: 100%;
   display: flex;
   %warehouse__global{
     height: 100%;
@@ -62,6 +62,8 @@ $bg-color: #F2F7FF;
   }
   .warehouse-navbar{
     width: 100%;
+    position: sticky;
+    top: 0;
   }
 }
 @media screen and (max-width: 1024px) {

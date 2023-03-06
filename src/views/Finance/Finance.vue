@@ -60,6 +60,8 @@ $bg-color: #F2F7FF;
   }
   .warehouse-navbar{
     width: 100%;
+    position: sticky;
+    top: 0;
   }
 }
 @media screen and (max-width: 1024px) {

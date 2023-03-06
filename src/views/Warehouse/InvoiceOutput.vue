@@ -17,7 +17,8 @@
           </template>
           <template #body_actions="{item}">
               <div class="actions">
-                <router-link class="eye" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <router-link class="eye" v-if="role === 'warehouseman'" :to="{name: 'invoice_output_item', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
+                <router-link class="eye" v-if="role === 'director'" :to="{name: 'invoice_output_item_d', params:{id: item.id}}"><i class="fa-solid fa-eye"></i></router-link>
                 <span class="edit" v-if="item.status != 'confirmed' && role !== 'director'" @click="openInvoiceEdit(item, 'output-invoice')"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" v-if="item.status != 'confirmed' && role !== 'director'" @click="open_Output_Invoice(item.id, 'output-invoice')"><i class="fa-solid fa-trash-can"></i></span>
               </div>

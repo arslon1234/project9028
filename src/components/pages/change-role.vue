@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog1" :width="'40%'">
+    <AppModal v-model="dialog1">
         <div class="Login__roles">
         <p>Select your role</p>
       <select v-model="role.selected_role">

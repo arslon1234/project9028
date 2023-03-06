@@ -33,6 +33,7 @@
     position: fixed;
     transform: translate(-50%, -50%);
     left: 50%;
+    width: 50%;
     max-height: 600px;
     top: 50%;
     background-color: white;
@@ -42,7 +43,6 @@
     border-radius: 0.5rem;
   }
   .app-modal-show {
-    /* width: 90%; */
     opacity: 1;
     z-index: 100;
   }
@@ -52,7 +52,6 @@
   .app-modal__body {
     padding: 20px;
   }
-  
   .app-modal-shadow {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
@@ -60,5 +59,20 @@
     top: 0;
     width: 100%;
     height: 100%;
+  }
+  @media (max-width: 990px) {
+    .app-modal{
+      width: 70%;
+    }
+  }
+  @media (max-width: 768px) {
+    .app-modal{
+      width: 80%;
+    }
+  }
+  @media (max-width: 576px) {
+    .app-modal{
+      width: 90%;
+    }
   }
   </style>

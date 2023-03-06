@@ -19,7 +19,8 @@ import Suppliers from '../views/Warehouse/Suppliers.vue'
 import Income from '../views/Finance/Income.vue'
 import Expence from '../views/Finance/Expence.vue'
 import Clients from '../views/Sales/Clients.vue'
-import ClientsLists from '../views/Director/ClientLists.vue'
+import Dashboard from '../views/Director/Dashboard.vue'
+import DashboardDemo from '../views/Director/DashboardDemo.vue'
 const routes = [
   {
     path: '/login',
@@ -114,6 +115,16 @@ const routes = [
         component:Profile
       },
       {
+        path: "/dashboard",
+        name:"dashboard",
+        component:Dashboard
+      },
+      {
+        path: "/dashboard_demo",
+        name:"dashboard_demo",
+        component:DashboardDemo
+      },
+      {
         path: "/product_list",
         name:"product_list",
         component:ProductLists
@@ -122,7 +133,7 @@ const routes = [
         path:"/groups_brands",
         name:"groups_brands",
         meta:{
-          child: 'product_lists',
+          child: 'product_lists_d',
         },
         component: Groups_Brands
       },
@@ -179,9 +190,43 @@ const routes = [
         component: SingleProduct
       },
       {
-        path: '/client_lists',
-        name: 'client',
-        component: ClientsLists
+        path: '/director_client_lists',
+        name: 'director_client_lists',
+        component: Clients
+      },
+      {
+        path: "/invoice_input_item_d/:id",
+        name:"invoice_input_item_d",
+        meta:{
+          child: 'input_item_director',
+        },
+        component:InvoiceInputItem
+      },
+      {
+        path: "/invoice_output_item_d/:id",
+        name:"invoice_output_item_d",
+        meta:{
+          child: 'output_item_director',
+        },
+        component:InvoiceOutputItem
+      },
+      {
+        path: "/returns_item/:id",
+        name:"returns_item",
+        meta:{
+          child: 'returns_item_director'
+        },
+        component:ReturnsItem
+      },
+      {
+        path: '/income_director',
+        name: 'income_director',
+        component: Income
+      },
+      {
+        path: '/expence_director',
+        name: 'expence_director',
+        component: Expence
       },
     ]
   },

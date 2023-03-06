@@ -12,12 +12,12 @@
         <div class="groups_brands__table">
           <appTable :headers="headers" :body="$store?.state.groups">
             <template #body_action="{item}">
-              <button class="delete_btn" @click="deleteBrandGroup(item.id,'group')">delete</button>
+              <button class="delete_btn" @click="deleteBrandGroup(item.id,'group')" v-if="role !== 'director'">delete</button>
         </template>
           </appTable>
         </div>
         <aside class="groups_brands_act">
-          <button @click="openGroupBrand('groups')">Create</button>
+          <button @click="openGroupBrand('groups')" v-if="role !== 'director'">Create</button>
         </aside>
       </div>
       <div class="groups_brands__item_el">
@@ -25,12 +25,12 @@
         <div class="groups_brands__table">
           <appTable :headers="headers" :body="$store?.state.brands">
             <template #body_action="{ item }">
-            <button class="delete_btn" @click="deleteBrandGroup(item.id,'brand')">delete</button>
+            <button class="delete_btn" @click="deleteBrandGroup(item.id,'brand')" v-if="role !== 'director'">delete</button>
            </template>
           </appTable>
         </div>
         <aside class="groups_brands_act">
-          <button @click="openGroupBrand('brands')">Create</button>
+          <button @click="openGroupBrand('brands')" v-if="role !== 'director'">Create</button>
         </aside>
       </div>
     </div>
@@ -48,6 +48,7 @@ const groups = ref([])
 const group_brand = ref()
 const delete_group = ref()
 const delete_brand = ref()
+const role = localStorage.getItem('role')
 const headers = ref([
   {title: "№", value:"id"},
   {title: "Name", value:"title"},

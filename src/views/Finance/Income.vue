@@ -2,13 +2,11 @@
     <div class="product__lists">
       <financeIncome ref="finance_income"/>
     <div class="product__lists-action">
-        <button @click="openModal('sales')">Add income</button>
+        <button @click="openModal('sales')" v-if="role !== 'director'">Add income</button>
     </div>
       <div class="product__lists-table">
         <app-table :headers="headers" :body="income">
-          <!-- <template #body_brand="{ item }">
-            <span>{{ item.brand.title }}</span>
-          </template> -->
+         
         </app-table>
       </div>
       <div class="pagination">
@@ -42,6 +40,7 @@
     {title: "Invoice", value:"invoice"},
     {title: "Amount", value:"amount"},
   ])
+  const role = localStorage.getItem("role")
   const getItem =()=>{
    http.get('/api/finance/income/',{
     params:{

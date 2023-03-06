@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog" :width="'50%'">
+    <AppModal v-model="dialog">
       <div class="modal">
         <h3>Add Expense</h3>
         <Form @submit="send">
@@ -299,30 +299,11 @@
         cursor: pointer;
       }
   }
-  .modal_act{
-        margin-top: 40px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 30px;
-        %btn{
-            padding: 15px 50px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            color: $white-color;
-            cursor: pointer
-        }
-        .btn1{
-            @extend %btn;
-            background-color: $blue-color2;
-        }
-        .btn2{
-            @extend %btn;
-            background-color: $red-color;
-        }
-    }
+    @media (max-width: 576px) {
+      Form{
+        width: 90%;
+      }
+}
   }
   
   </style>

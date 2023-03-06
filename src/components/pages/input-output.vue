@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog" :width="'40%'">
+    <AppModal v-model="dialog">
         <div class="input_output">
             <h1 v-if="!forms_input.id">Add input invoice</h1>
             <h1 v-else>Edit input invoice</h1>
@@ -49,7 +49,7 @@
         </Form>
         </div>
    </AppModal>
-    <AppModal v-model="dialog2" :width="'40%'">
+    <AppModal v-model="dialog2">
         <div class="input_output">
             <h1 v-if="!forms_output.id">Add output invoice</h1>
             <h1 v-else>Edit output invoice</h1>
@@ -113,7 +113,7 @@
         </Form>
         </div>
    </AppModal>
-   <AppModal v-model="dialog3" :width="'40%'">
+   <AppModal v-model="dialog3">
     <section v-if="title === 'output-invoice'" class="delete_GB">
         <h1>Are you sure you want to deletes ?</h1>
         <aside class="delete_GB__action">
@@ -336,6 +336,7 @@ $red-color: #ff7976;
       border-radius: 5px;
     }
     }
+
 }
 .delete_GB{
     width: 100%;
@@ -369,5 +370,26 @@ $red-color: #ff7976;
             background-color: $red-color;
         }
     }
+}
+@media (max-width: 576px) {
+   Form{
+     width: 90%;
+   }
+   .delete_GB{
+    padding: 20px;
+    h1{
+        font-size: 22px;
+        letter-spacing: 0.5px;
+    }
+    .delete_GB__action{
+        margin-top: 20px;
+        gap: 15px;
+        %btn{
+          padding: 10px 30px;
+          border-radius: 3px;
+          font-size: 16px;
+        }
+    }
+}
 }
 </style>

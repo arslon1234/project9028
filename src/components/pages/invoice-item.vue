@@ -1,5 +1,5 @@
 <template>
-    <AppModal v-model="dialog" :width="'40%'">
+    <AppModal v-model="dialog">
         <div class="Password">
             <div class="Password__change">
               <h1 v-if="form.index">Edit product</h1>
@@ -51,7 +51,7 @@
     </div>
     </div>
    </AppModal>
-   <AppModal v-model="dialog2" :width="'40%'">
+   <AppModal v-model="dialog2">
       <div class="modal">
         <h3>Are you sure you want to deletes ?</h3>
         <div class="modal_act">
@@ -332,5 +332,24 @@ $red-color: #ff7976;
             background-color: $red-color;
         }
 }
+}
+@media (max-width: 576px) {
+      Form{
+        width: 90%;
+      }
+      .modal{
+        h3{
+        font-size: 20px;
+}
+        .modal_act{
+        gap: 14px;
+        %btn{
+            padding: 10px 30px;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+}
+      }
+      
 }
 </style>
