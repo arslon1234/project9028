@@ -11,6 +11,9 @@ http.interceptors.request.use(
     }
     config.headers["Language"] = localStorage.getItem("lang");
     config.headers["Accept"] = "application/json";
+    // 'resolve.fallback: { "http": require.resolve("stream-http") }'
+    // resolve.fallback: { "http": false }
+
     // config.headers["Access-Control-Allow-Origin"] = "*";
     // config.headers["Content-Type"] = "multipart/form-data";
     // config.headers['Content-Type'] = "application/json"
@@ -18,7 +21,6 @@ http.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
 // http.interceptors.response.use(
 //   (response) => response,
 //   (error) => {

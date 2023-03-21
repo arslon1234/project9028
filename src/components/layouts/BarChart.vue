@@ -22,7 +22,7 @@ import {
   LinearScale
 } from 'chart.js'
 import { Bar ,Line} from 'vue-chartjs'
-import {ref,watch} from 'vue'
+import {computed, reactive, ref} from 'vue'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const props = defineProps({
   income_total:{
@@ -32,8 +32,8 @@ const props = defineProps({
     type: Array
   },
 })
-
-const chartData = ref({
+const chartData = computed(()=>{
+  return {
     data: {
         labels: ['January', 'February', 'March',"April",'May','June','July','August','September','October','November','December'],
         datasets: [
@@ -67,12 +67,7 @@ const chartData = ref({
       options: {
         responsive: true
       }
-})
-watch(props, (val) => {
-  chartData.value.data.datasets[0].data = val.income_total
-  chartData.value.data.datasets[1].data = val.expense_total
-  console.log(val.income_total,'val_total')
-  console.log(val.expense_total,'val_total')
+  }
 })
 </script>
 
