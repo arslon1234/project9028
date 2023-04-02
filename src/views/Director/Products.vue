@@ -20,7 +20,7 @@
             <span class="product__lists-table-text">{{ item.description }}</span>
           </template>
           <template #body_title="{ item }">
-            <router-link :to="{ name: 'single_product', params: { id: item.id } }" class="product__lists-table-text">{{ item.title }}</router-link>
+            <router-link :to="{ name: 'single_product_d', params: { id: item.id } }" class="product__lists-table-text">{{ item.title }}</router-link>
           </template>
         </app-table>
       </div>

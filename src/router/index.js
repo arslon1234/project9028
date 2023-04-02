@@ -182,8 +182,8 @@ const routes = [
         component:ReturnsItem
       },
       {
-        path:"/single-product/:id",
-        name:"single_product",
+        path:"/single-product_d/:id",
+        name:"single_product_d",
         meta:{
           child: 'product_lists',
         },
