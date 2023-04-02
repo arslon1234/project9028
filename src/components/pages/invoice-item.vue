@@ -14,8 +14,8 @@
         v-if="!form.index"
         >
         <select id="product" class="form__select" v-model="form.product">
-          <option disabled selected hidden value="">Select product group</option>
-          <option :value="item.id" v-for="item in $store?.state?.groups" :key="item.id">{{ item.title }}</option>
+          <option disabled hidden value="">Select product</option>
+          <option :value="item.id" v-for="item in $store?.state?.products" :key="item.id">{{ item.title }}</option>
         </select>
        <p class="login__input-error" v-if="errors && errors.length">
           {{ errors[0] }}

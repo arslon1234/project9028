@@ -24,6 +24,7 @@ onMounted(() => {
   store.dispatch("getBrands")
   store.dispatch("getSuppliers")
   store.dispatch("getClients")
+  store.dispatch("getProducts")
 })
 const isShow = ref(false)
 const isShowItem =()=>{
