@@ -8,7 +8,6 @@
     :width="900"
     :height="400"
     />
-    {{ expense_total }}
   </div>
   </template>
 <script setup>

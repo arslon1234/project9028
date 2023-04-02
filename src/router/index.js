@@ -125,8 +125,8 @@ const routes = [
         component:DashboardDemo
       },
       {
-        path: "/product_list",
-        name:"product_list",
+        path: "/product_list_d",
+        name:"product_list_d",
         component:ProductLists
       },
       {
@@ -211,8 +211,8 @@ const routes = [
         component:InvoiceOutputItem
       },
       {
-        path: "/returns_item/:id",
-        name:"returns_item",
+        path: "/returns_item_d/:id",
+        name:"returns_item_d",
         meta:{
           child: 'returns_item_director'
         },

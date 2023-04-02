@@ -2,7 +2,11 @@
   <section class="groups_brands">
     <groupBrand ref="group_brand"/>
     <groupBrand ref="delete_brand"/>
-    <router-link to="/product_list" class="btn">
+    <router-link to="/product_list_d" v-if="role === 'director'" class="btn">
+      <i class="left fa-solid fa-left-long"></i>
+      <span>Back</span>
+    </router-link>
+    <router-link to="/product-list" v-if="role === 'warehouseman'" class="btn">
       <i class="left fa-solid fa-left-long"></i>
       <span>Back</span>
     </router-link>

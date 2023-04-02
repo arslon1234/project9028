@@ -12,7 +12,7 @@
           <span><i class="fa-solid fa-chart-column"></i></span>
           <span :class="isShow ? 'sidebar__items-title' : ''" >Dashboard demo</span>
       </router-link>
-      <router-link to="/product_list" active-class="sidebar__item1" class="sidebar__item" :class="{ sidebar__item1: $route.meta.child === 'product_lists_d' }">
+      <router-link to="/product_list_d" active-class="sidebar__item1" class="sidebar__item" :class="{ sidebar__item1: $route.meta.child === 'product_lists_d' }">
           <span><i class="fa-solid fa-list"></i></span>
           <span :class="isShow ? 'sidebar__items-title' : ''" >Products</span>
       </router-link>
