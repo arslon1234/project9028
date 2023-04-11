@@ -103,7 +103,10 @@ try {
       description: forms.value.description
      }).then(res=>{
       if(res.status === 201){
-        location.reload()
+        console.log(res, 'res')
+        Notification({ text: "Product added !!!" },{type: 'success'})
+        
+        router.push({name: 'returns_item',params:{id: res.data.id}})
       }
      })
  }
@@ -111,15 +114,13 @@ try {
   description: forms.value.description
  }).then(res=>{
   if(res.status === 200){
-    location.reload()
+    setTimeout(()=>{
+          location.reload()
+    },2000)
+    Notification({ text: "Product updated !!!" },{type: 'warning'})
   }
 })
 dialog.value = false
-if(!id){
-  Notification({ text: "Product added !!!" },{type: 'success'})
-}else{
-  Notification({ text: "Product updated !!!" },{type: 'warning'})
-}
 } catch(err) {
  console.log(err);
   Notification({ text: "Something wrong !!!" },{type: 'danger'}

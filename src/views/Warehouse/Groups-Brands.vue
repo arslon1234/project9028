@@ -52,7 +52,7 @@ const groups = ref([])
 const group_brand = ref()
 const delete_group = ref()
 const delete_brand = ref()
-const role = localStorage.getItem('role')
+const role = sessionStorage.getItem('role')
 const headers = ref([
   {title: "№", value:"id"},
   {title: "Name", value:"title"},

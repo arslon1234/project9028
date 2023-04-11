@@ -72,7 +72,7 @@ const headers_output = ref([
   {title: "Invoice", value:"invoice"},
   {title: "Action", value:"actions"},
 ])
-const role = localStorage.getItem("role")
+const role = sessionStorage.getItem("role")
 async function confirmInvoice(){
   try{
     await http.post(`/api/warehouse/output-invoice/${url[4]}/confirm/`).then(res=>{

@@ -49,7 +49,7 @@ const params_input = ref({
   per_page: 10,
   last_page: null,
 });
-const role = localStorage.getItem("role")
+const role = sessionStorage.getItem("role")
 const headers_input = ref([
   {title: "№", value:"index"},
   {title: "Supplier", value:"supplier"},

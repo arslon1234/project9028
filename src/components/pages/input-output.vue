@@ -171,7 +171,6 @@ watch(dialog,(value) => {
         forms_input.value.supplier = null 
         forms_input.value.description = ''
       }
-      
 })
 watch(dialog2,(value) => {
       if (!value) {
@@ -180,7 +179,6 @@ watch(dialog2,(value) => {
         forms_output.value.description = ''
         forms_output.value.status = ''
       }
-      
 })
 
 const deleteInvoices =(id, value)=>{

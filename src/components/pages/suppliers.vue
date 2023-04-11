@@ -28,8 +28,8 @@
                {{ errors[0] }}
              </p>
              </Field>
-             <label for="desc" v-if="!id">Credit</label>
-             <Field
+             <!-- <label for="desc" v-if="!id">Credit</label> -->
+             <!-- <Field
                 rules="required"
                 :modelValue="forms.credit"
                 v-slot="{ errors }"
@@ -40,7 +40,7 @@
             <p class="login__input-error" v-if="errors && errors.length">
                {{ errors[0] }}
              </p>
-             </Field>
+             </Field> -->
              <button
             type="submit"
             v-if="id"
@@ -110,7 +110,7 @@ async function send(event) {
        await http.post('/api/warehouse/supplier/',{
         title: forms.value.title,
         address: forms.value.address,
-        credit: forms.value.credit
+        // credit: forms.value.credit
        }).then(res=>{
         if(res.status === 201){
           location.reload()
@@ -120,7 +120,7 @@ async function send(event) {
    else await http.put(`/api/warehouse/supplier/${id.value}/`, {
     title: forms.value.title,
     address: forms.value.address,
-    credit: forms.value.credit
+    // credit: forms.value.credit
    }).then(res=>{
     // if(res.status === 200){
     //     location.reload()

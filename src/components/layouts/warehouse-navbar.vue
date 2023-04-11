@@ -23,11 +23,11 @@ const isShow =()=>{
   isHide.value = !isHide.value
 }
 const Log_Out =()=>{
-  localStorage.removeItem("token")
+  sessionStorage.removeItem("token")
   location.reload()
 }
 const Go_Profile =()=>{
-  const role = localStorage.getItem("role")
+  const role = sessionStorage.getItem("role")
   if(role === 'warehouseman'){
   router.push({name: 'warehouse_profile'})
   }else if(role === 'salesman'){

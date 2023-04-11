@@ -51,7 +51,7 @@ import router from '@/router';
     per_page: 10,
     last_page: null,
   });
-  const role = localStorage.getItem("role")
+  const role = sessionStorage.getItem("role")
   const headers_output = ref([
     {title: "№", value:"index"},
     {title: "Client", value:"client"},

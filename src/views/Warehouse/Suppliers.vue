@@ -38,7 +38,7 @@ const params = ref({
     per_page: 10,
     last_page: null,
 });
-const role = localStorage.getItem("role")
+const role = sessionStorage.getItem("role")
 const supplier = ref()
 const headers = ref([
     {title: "№", value:"id"},

@@ -277,8 +277,8 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to,from,next)=>{
-  const token = localStorage.getItem("token")
-  const role = localStorage.getItem("role")
+  const token = sessionStorage.getItem("token")
+  const role = sessionStorage.getItem("role")
   const name = to.name === "login"
   if(!token && !name){
     return next({name: "login"})

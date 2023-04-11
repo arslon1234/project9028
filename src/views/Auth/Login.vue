@@ -119,8 +119,8 @@ const Login_With_Role =()=>{
     current_role:role.value.selected_role
   }).then((response)=>{
     if(response.data.access){
-      localStorage.setItem('token', response.data.access)
-      localStorage.setItem('role', response.data.current_role)
+      sessionStorage.setItem('token', response.data.access)
+      sessionStorage.setItem('role', response.data.current_role)
       if(response.data.current_role === 'warehouseman'){
         router.push({name: "product-list"})
       }else if(response.data.current_role === 'director'){

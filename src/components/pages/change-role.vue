@@ -18,8 +18,10 @@
 import {ref, defineExpose} from 'vue'
 import AppModal from "@/components/ui/app-modal.vue";
 import http from '@/plugins/axios';
+import { useRouter } from "vue-router";
 import Notification from '@/plugins/Notification';
 import store from '@/store';
+const router = useRouter();
 const dialog1 = ref(false)
 const role = ref({
   selected_role:""
@@ -33,7 +35,16 @@ async function send() {
         role: role.value.selected_role
        }).then(res=>{
         if(res.status === 200){
-            location.reload()
+          if(role.value.selected_role === 'warehouseman'){
+            router.push({name: "warehouse_profile"})
+          }else if(role.value.selected_role === 'director'){
+            router.push({name: "director_profile"})
+          }else if(role.value.selected_role === 'salesman'){
+            router.push({name: "sales_profile"})
+          }else if(role.value.selected_role === 'financier'){
+            router.push({name: "finance_profile"})
+          }
+          // location.reload()
         }
        })
     dialog1.value = false
