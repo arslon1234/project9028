@@ -20,7 +20,7 @@ import {
   CategoryScale,
   LinearScale
 } from 'chart.js'
-import { Bar ,Line} from 'vue-chartjs'
+import { Bar} from 'vue-chartjs'
 import {computed, reactive, ref} from 'vue'
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const props = defineProps({

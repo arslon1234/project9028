@@ -46,15 +46,24 @@ import {computed, onMounted, ref} from 'vue'
 import appTable from '@/components/ui/app-table.vue';
 import groupBrand from '@/components/pages/group-brand.vue';
 import store from '@/store';
-import { mapGetters } from 'vuex';
 const brands = ref([])
 const groups = ref([])
 const group_brand = ref()
 const delete_group = ref()
 const delete_brand = ref()
 const role = sessionStorage.getItem('role')
+const params_group = ref({
+  page: 1,
+  per_page: 10,
+  last_page: null,
+});
+const params_brand = ref({
+  page: 1,
+  per_page: 10,
+  last_page: null,
+});
 const headers = ref([
-  {title: "№", value:"id"},
+  {title: "№", value:"index"},
   {title: "Name", value:"title"},
   {title: "Delete", value:"action"},
 ])
@@ -64,6 +73,10 @@ const deleteBrandGroup = (id,value) =>{
 const openGroupBrand =(item) =>{
   group_brand.value.create_group_brand(item)
 }
+onMounted(() => {
+  store.dispatch("getGroups", params_group?.value)
+  store.dispatch("getBrands",params_brand?.value)
+})
 </script>
 
 <style lang="scss" scoped> 

@@ -122,6 +122,7 @@ const getAnnualy =()=>{
     http.get('./api/dashboard/annual-profit/').then(res=>{
         let total_expense = []
         let total_income = []
+        console.log(res.data[1], 'dashboard')
         for(let i = 1; i <= 12; i++){
             total_expense.push(res?.data[i]?.total_expense)
             total_income.push(res?.data[i]?.total_income)

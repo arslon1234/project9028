@@ -7,7 +7,7 @@
               <template #body_action="{item}" v-if="role !== 'director'">
                 <span class="edit" @click="openModalEdit(item)"><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="delete" @click="deleteModal(item)"><i class="fa-solid fa-trash-can"></i></span>
-          </template>
+              </template>
             </appTable>
             <!-- <div class="pagination">
            <VPagination

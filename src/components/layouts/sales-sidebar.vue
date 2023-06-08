@@ -24,7 +24,7 @@
   })
   </script>
   
-  <style scoped lang="scss">
+<style scoped lang="scss">
 $blue-color: #435EBE;
 $hover-color: #f0f1f5;
 $bg-color: #fff;
@@ -62,11 +62,7 @@ $bg-color: #fff;
             color: $color;
             background-color: $bg_color;
         }
-        // .sidebar__items-title{
-        //     display: block;
-        // }
         %sidebar_item{
-            // display: block;
             width: 90%;
             margin: 10px;
             padding: 12px 17px;
@@ -110,8 +106,6 @@ $bg-color: #fff;
     z-index: 999;
     overflow: visible;
 }
-
-
 @mixin sidebar__item($color, $bg_color){
     color: $color;
     background-color: $bg_color;
@@ -128,6 +122,5 @@ $bg-color: #fff;
             border-radius: 5px;
             cursor: pointer
 }
-
 }
 </style>

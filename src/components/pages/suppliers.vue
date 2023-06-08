@@ -28,19 +28,6 @@
                {{ errors[0] }}
              </p>
              </Field>
-             <!-- <label for="desc" v-if="!id">Credit</label> -->
-             <!-- <Field
-                rules="required"
-                :modelValue="forms.credit"
-                v-slot="{ errors }"
-                name="Credit"
-                v-if="!id"
-              >
-            <input class="form__input" type="number" id="product_name" placeholder="Credit" v-model="forms.credit">
-            <p class="login__input-error" v-if="errors && errors.length">
-               {{ errors[0] }}
-             </p>
-             </Field> -->
              <button
             type="submit"
             v-if="id"

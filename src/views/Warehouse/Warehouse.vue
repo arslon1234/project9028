@@ -20,8 +20,6 @@ import store from '@/store';
 import {onMounted } from 'vue'
 onMounted(() => {
   store.dispatch("getMe")
-  store.dispatch("getGroups")
-  store.dispatch("getBrands")
   store.dispatch("getSuppliers")
   store.dispatch("getClients")
   store.dispatch("getProducts")
@@ -34,7 +32,6 @@ const isShowItem =()=>{
 
 <style scoped lang="scss">
 $bg-color: #F2F7FF;
-
 .warehouse{
   width: 100%;
   height: 100vh;

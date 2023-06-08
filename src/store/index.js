@@ -38,14 +38,37 @@ export default createStore({
         commit("getMe", res.data)
       })
     },
-    getBrands({commit}){
-      http.get("/api/warehouse/brand/").then((res)=>{
+    getBrands({commit},param){
+      http.get("/api/warehouse/brand/",{
+        params:{
+          per_page: param?.per_page,
+          page: param?.page,
+        }
+       }).then((res)=>{
+        res.data.results.forEach((item,index)=>{
+          item.index =
+          param?.page * param?.per_page -
+          (param?.per_page - 1) +
+          index;
+        })
         commit("getBrands",res.data.results)
       })
     },
-    getGroups({commit}){
-      http.get("/api/warehouse/group/").then((res)=>{
-        commit("getGroups",res.data.results)
+    getGroups({commit} , param){
+      http.get("/api/warehouse/group/",{
+        params:{
+          per_page: param?.per_page,
+          page: param?.page,
+        }
+       }).then((res)=>{
+        res.data.results.forEach((item,index)=>{
+          item.index =
+          param?.page * param?.per_page -
+          (param?.per_page - 1) +
+          index;
+        })
+        commit("getGroups", res?.data?.results)
+        console.log(res.data.results, 'group')
       })
     },
     getSuppliers({commit}){

@@ -3,10 +3,6 @@
     <form-modal ref="profile_modal" :title_text="title_text"/>
     <changeRole ref="change_role"/>
     <changePassword ref="change_password"/>
-        <!-- <router-link to="/login" class="profile__back">
-            <span><i class="fa-solid fa-left-long"></i></span>
-            <span>Back</span>
-        </router-link> -->
     <div class="profile__items">
         <div class="profile__item1">
             <div class="profile__item1-img">
